@@ -26,11 +26,6 @@ builder.Services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
         microsoftOptions.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
         microsoftOptions.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
         microsoftOptions.AuthorizationEndpoint = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize";
-        microsoftOptions.Events.OnRedirectToAuthorizationEndpoint = context =>
-        {
-            context.Response.Redirect(Regex.Replace(context.RedirectUri, "redirect_uri=(.)+%2Fsignin-microsoft", "redirect_uri=https%3A%2F%2Fbookish-xylophone-p7467rxv5pwf76x6-5233.app.github.dev%2Fsignin-microsoft"));
-            return Task.FromResult(0);
-        };
     });
 
 

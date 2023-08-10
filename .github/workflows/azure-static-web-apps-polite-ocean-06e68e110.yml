@@ -27,8 +27,7 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "the-squad-server" # App source code path
-          output_location: "the-squad-server/wwwroot" # Built app content directory - optional
+          app_location: "/the-squad-server" # App source code path
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:

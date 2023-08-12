@@ -1,0 +1,65 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="card mt-5 mx-auto" style="width: 35rem;">
+    <div class="card-header">
+        <p class="h2">@ViewData["Title"]</p>
+    </div>
+    <img src="https://thesquadpublic.blob.core.windows.net/public/The-Squad-200x200.png" class="mx-auto" alt="The-Squad-Logo" />
+    <div class="card-body">
+            <section>
+                <p class="card-title h5 text-center">
+                    We only support external logins through Microsoft.
+                </p>
+                <p class="card-text text-center">
+                    <small class="text-warning">Please login with your personal / xbox live Microsoft Identity.</small>
+                </p>
+
+                <hr />
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <div>
+                            <p>
+                                There are no external authentication services configured. See this <a
+                                    href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                                    about setting up this ASP.NET application to support logging in via external services</a>.
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl"
+                            method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    <div class="d-grid gap-2">
+                                        @foreach (var provider in Model.ExternalLogins!)
+                                        {
+                                            if (@provider.DisplayName == "Microsoft")
+                                            {
+                                                <button type="submit" class="btn btn-light" name="provider" value="@provider.Name"
+                                                title="Log in using your @provider.DisplayName account">
+                                                    <img class="img-fluid" style="height: 5rem;" src="http://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWEDnc?ver=9fb4" />
+                                                </button>
+                                            } else{
+                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name"
+                                                    title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                            }
+                                        }
+                                    </div>
+                                </p>
+                            </div>
+                        </form>
+                    }
+                }
+            </section>
+            </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

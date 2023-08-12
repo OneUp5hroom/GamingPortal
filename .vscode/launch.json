@@ -10,21 +10,13 @@
             "request": "launch",
             "program": "dotnet",
             "args": [
-                "run"
+                "run",
+                "--urls","https://localhost:5168;http://localhost:5169"
             ],
             "cwd": "${workspaceFolder}/the-squad-server",
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
-        },
-        {
-            "name": ".NET Core Debug Blazor Web Assembly in Chrome",
-            "type": "chrome",
-            "request": "launch",
-            "timeout": 30000,
-            "url": "https://bookish-xylophone-p7467rxv5pwf76x6-5233.app.github.dev",
-            "webRoot": "${workspaceFolder}/the-squad-server/wwwroot",
-            "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
         }
     ]
 }

@@ -1,9 +1,17 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿<div class="top-row ps-5 navbar bg-black" style="height: 8rem;">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">the-squad-server</a>
+        <a class="navbar-brand" href="">
+            <div class="d-inline-block mx-auto">
+                <img src="https://thesquadpublic.blob.core.windows.net/public/The-Squad-100x100.png" />
+                <span class="align-bottom pb-5 bs-light-text-emphasis" style="margin-right:-15rem">.games</span>
+            </div>
+        </a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
+    </div>
+    <div class="position-sticky bottom-0 mb-3 mx-auto">
+            <LoginDisplay />
     </div>
 </div>
 
@@ -26,6 +34,7 @@
         </div>
     </nav>
 </div>
+
 
 @code {
     private bool collapseNavMenu = true;

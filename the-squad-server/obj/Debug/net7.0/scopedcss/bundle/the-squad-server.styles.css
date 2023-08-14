@@ -1,3 +1,21 @@
+/* _content/the-squad-server/Pages/Creators.razor.rz.scp.css */
+.profile-image[b-gb411nuslc] {
+    width: 75px;
+    height: 75px;
+    position: relative;
+    top: 5px;
+    left: 5px;
+    border-radius: 50%;
+    border: 5px solid white;
+}
+
+.game-image[b-gb411nuslc] {
+    width: 10em;
+}
+.stream-site[b-gb411nuslc] {
+    width: 6em;
+    margin: 2em;
+}
 /* _content/the-squad-server/Shared/MainLayout.razor.rz.scp.css */
 .page[b-fd48cv14ua] {
     position: relative;

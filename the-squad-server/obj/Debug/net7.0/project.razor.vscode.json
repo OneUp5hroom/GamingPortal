@@ -9,6 +9,201 @@
   "ProjectWorkspaceState": {
     "TagHelpers": [
       {
+        "HashCode": 997365830,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Index",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Index",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Index"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Index",
+          "Common.TypeNameIdentifier": "Index",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": 801325131,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Index",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Index",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "the_squad_server.Pages.Index"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Index",
+          "Common.TypeNameIdentifier": "Index",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": -1816879288,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Administration",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Administration",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Administration"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Administration",
+          "Common.TypeNameIdentifier": "Administration",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": 1816462981,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Administration",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Administration",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "the_squad_server.Pages.Administration"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Administration",
+          "Common.TypeNameIdentifier": "Administration",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": -781855802,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Servers",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Servers",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Servers"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Servers",
+          "Common.TypeNameIdentifier": "Servers",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": 1357933707,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Servers",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Servers",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "the_squad_server.Pages.Servers"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Servers",
+          "Common.TypeNameIdentifier": "Servers",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": -973680357,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.VideoBackground",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.VideoBackground",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "VideoBackground"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.VideoBackground",
+          "Common.TypeNameIdentifier": "VideoBackground",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": -286132734,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.VideoBackground",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.VideoBackground",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "the_squad_server.Pages.VideoBackground"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.VideoBackground",
+          "Common.TypeNameIdentifier": "VideoBackground",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": 40174114,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Creators",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Creators",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Creators"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Creators",
+          "Common.TypeNameIdentifier": "Creators",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": -1715709885,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Creators",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Creators",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "the_squad_server.Pages.Creators"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Creators",
+          "Common.TypeNameIdentifier": "Creators",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
         "HashCode": -2100293780,
         "Kind": "Components.Component",
         "Name": "the_squad_server.Shared.LoginDisplay",
@@ -24480,6 +24675,26 @@
       "FilePath": "c:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\Pages\\_ViewImports.cshtml",
       "TargetPath": "Pages\\_ViewImports.cshtml",
       "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\Pages\\Administration.razor",
+      "TargetPath": "Pages\\Administration.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\Pages\\Servers.razor",
+      "TargetPath": "Pages\\Servers.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\Pages\\VideoBackground.razor",
+      "TargetPath": "Pages\\VideoBackground.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\Pages\\Creators.razor",
+      "TargetPath": "Pages\\Creators.razor",
+      "FileKind": "component"
     }
   ]
 }

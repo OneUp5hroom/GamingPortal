@@ -1,0 +1,17 @@
+.profile-image[b-gb411nuslc] {
+    width: 75px;
+    height: 75px;
+    position: relative;
+    top: 5px;
+    left: 5px;
+    border-radius: 50%;
+    border: 5px solid white;
+}
+
+.game-image[b-gb411nuslc] {
+    width: 10em;
+}
+.stream-site[b-gb411nuslc] {
+    width: 6em;
+    margin: 2em;
+}

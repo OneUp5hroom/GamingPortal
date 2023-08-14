@@ -1,18 +1,17 @@
-﻿<div class="d-grid gap-2 mx-auto">
+﻿<div class="d-grid gap-2">
     <AuthorizeView>
         <Authorized>
-            <a class="btn btn-secondary" style="text-decoration: none;" href="Identity/Account/Manage"
-                data-toggle="tooltip" data-placement="top" title="Manage Your Account">
-                @context.User.Identity?.Name
-            </a>
-            <form method="post" action="Identity/Account/Logout">
-                <button type="submit" class="btn btn-secondary"
-                    style="background-color: var(--bs-warning-bg-subtle);">Log out
-                </button>
+            <div class="row mx-2">
+                <a class="btn btn-outline-info" role="button" href="Identity/Account/Manage">
+                    @context.User.Identity?.Name
+                </a>
+            </div>
+            <form method="post" action="Identity/Account/Logout" class="row mx-2">
+                <button type="submit" class="btn btn-outline-danger">Log out</button>
             </form>
         </Authorized>
         <NotAuthorized>
-            <a href="Identity/Account/Login" role="button" class="btn btn-outline-info d-inline-block">Log in</a>
+            <a href="Identity/Account/Login" role="button" class="btn btn-outline-info">Log in</a>
         </NotAuthorized>
     </AuthorizeView>
 </div>

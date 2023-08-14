@@ -75,7 +75,7 @@ main[b-fd48cv14ua] {
 }
 
 .top-row[b-wx6rwycztu] {
-    height: 3.5rem;
+    height: 8rem;
     background-color: rgba(0,0,0,0.4);
 }
 
@@ -88,6 +88,13 @@ main[b-fd48cv14ua] {
     font-size: 1.1rem;
     vertical-align: text-top;
     top: -2px;
+}
+
+.nav-identity[b-wx6rwycztu] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .nav-item[b-wx6rwycztu] {
@@ -134,7 +141,7 @@ main[b-fd48cv14ua] {
     
     .nav-scrollable[b-wx6rwycztu] {
         /* Allow sidebar to scroll for tall menus */
-        height: calc(100vh - 3.5rem);
+        height: calc(100vh - 8rem);
         overflow-y: auto;
     }
 }

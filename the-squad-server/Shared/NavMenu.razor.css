@@ -3,7 +3,7 @@
 }
 
 .top-row {
-    height: 3.5rem;
+    height: 8rem;
     background-color: rgba(0,0,0,0.4);
 }
 
@@ -16,6 +16,13 @@
     font-size: 1.1rem;
     vertical-align: text-top;
     top: -2px;
+}
+
+.nav-identity {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .nav-item {
@@ -62,7 +69,7 @@
     
     .nav-scrollable {
         /* Allow sidebar to scroll for tall menus */
-        height: calc(100vh - 3.5rem);
+        height: calc(100vh - 8rem);
         overflow-y: auto;
     }
 }

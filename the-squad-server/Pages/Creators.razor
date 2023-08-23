@@ -19,56 +19,76 @@
         <div class="row justify-content-center">
             @foreach (var creator in allCreators)
             {
-                <div class="col">
-                    <div class="card mx-auto m-3">
-                        <div class="card-header bg-info-subtle text-center">
-                            <img class="profile-image mb-1"
-                                src="@creator.ProfilePictureUrl"
-                                alt="Card image cap" />
-                            <h2>@creator.UserName</h2>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div class="container text-center">
-                                    <div class="row align-items-center">
-                                        <div class="col-4 mx-auto">
-                                            <img class="stream-site d-block mx-auto" src="https://pngimg.com/uploads/twitch/twitch_PNG48.png" />
-                                            <a class="btn btn-outline-info m-3 text-nowrap" role="button"
-                                                href="@creator.TwitchUrl">
-                                                Follow Me
-                                            </a>
-                                        </div>
-                                        <div class="col align-self-center">
-                                            <iframe src="https://player.twitch.tv/?video=1897404654&parent=the-squad.games"
-                                                frameborder="0" allowfullscreen="true" scrolling="no" height="171"
-                                                width="304" class="d-block mx-auto"></iframe>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            @if (creator.Games.Count > 0)
-                            {
-                                <li class="list-group-item">
-                                    <div class="container text-center">
-                                        <div class="row align-items-right">
-                                            <h5>Games I Play</h5>
-                                        </div>
-                                        <div class="row align-items-center">
-                                            @foreach (var game in creator.Games)
-                                            {
-                                                <div class="col">
-                                                    <img class="img-thumbnail"
-                                                        src="@game.ImageUrl"
-                                                        alt="@game.Name">
+                if (creator.Active == true)
+                {
+                    <div class="col">
+                        <div class="card mx-auto m-3">
+                            <div class="card-header bg-info-subtle text-center">
+                                <img class="profile-image mb-1"
+                                    src="@creator.ProfilePictureUrl"
+                                    alt="Card image cap" />
+                                <h2>@creator.UserName</h2>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                @if (creator.StreamingServices.Count > 0)
+                                {
+                                    <li class="list-group-item">
+                                        @foreach (var ss in creator.StreamingServices)
+                                        {
+                                            <div class="container text-center">
+                                                <div class="row align-items-center">
+                                                    <div class="col-4 mx-auto">
+                                                        <img class="stream-site d-block mx-auto" src="@ss.LogoUrl" />
+                                                        <a class="btn btn-outline-info m-3 text-nowrap" role="button"
+                                                            href="@ss.ServiceUrl">
+                                                            Follow Me
+                                                        </a>
+                                                    </div>
+                                                    <div class="col align-self-center">
+                                                        @if (ss.Name == "Twitch.Tv")
+                                                        {
+                                                            <iframe src="@ss.VideoUrl"
+                                                                frameborder="0" allowfullscreen="true" scrolling="no" height="171"
+                                                                width="304" class="d-block mx-auto"></iframe>
+                                                        }
+                                                        else if (ss.Name == "Youtube")
+                                                        {
+                                                            <iframe width="304" height="171" 
+                                                                src="@ss.VideoUrl" title="YouTube video player" 
+                                                                frameborder="0" 
+                                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                                                allowfullscreen></iframe>
+                                                        }
+                                                    </div>
                                                 </div>
-                                            }
+                                            </div>
+                                        }
+                                    </li>
+                                }
+                                @if (creator.Games.Count > 0)
+                                {
+                                    <li class="list-group-item">
+                                        <div class="container text-center">
+                                            <div class="row align-items-right">
+                                                <h5>Games I Play</h5>
+                                            </div>
+                                            <div class="row align-items-center">
+                                                @foreach (var game in creator.Games)
+                                                {
+                                                    <div class="col">
+                                                        <img class="img-thumbnail"
+                                                            src="@game.ImageUrl"
+                                                            alt="@game.Name">
+                                                    </div>
+                                                }
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                }
             }
         </div>
     </div>

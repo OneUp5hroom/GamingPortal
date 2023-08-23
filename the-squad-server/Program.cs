@@ -29,6 +29,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));  
 builder.Services.AddScoped<CreatorManager<Creator>>();
 builder.Services.AddScoped<GameManager<Game>>();
+builder.Services.AddScoped<StreamingServiceManager<StreamingService>>();
 
 var app = builder.Build();
 

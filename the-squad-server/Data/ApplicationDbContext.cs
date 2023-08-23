@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Game> Games { get; set; } = null!;
     public IQueryable<Game> AvailableGames => Games.Where(g => g.Generic == true);
     public DbSet<StreamingService> StreamingServices { get; set; } = null!;
+    public IQueryable<StreamingService> AvailableStreamingServices => StreamingServices.Where(g => g.Generic == true);
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using the_squad_server.Models;
 
 #nullable enable
@@ -30,7 +31,7 @@ public class CreatorManager<Tcrt> : IDisposable where Tcrt : class
     }
     public List<Creator> GetCreatorsAll()
     {
-        List<Creator> allCreators = _context.Creators.Where(c => c.UserId != "Default").ToList();
+        List<Creator> allCreators = _context.Creators.Include(c => c.Games).Include(c => c.StreamingServices).Where(c => c.UserId != "Default").ToList();
         return allCreators;
     }
     public async Task SetCreator(Creator _creator)
@@ -46,13 +47,7 @@ public class CreatorManager<Tcrt> : IDisposable where Tcrt : class
                 creatorFromDB.ProfilePictureUrl = _creator.ProfilePictureUrl;
                 creatorFromDB.ProfileDescription = _creator.ProfileDescription;
                 creatorFromDB.Games = _creator.Games.Count > 0 ? _creator.Games : new List<Game>();
-                creatorFromDB.TwitchUrl = _creator.TwitchUrl;
-                creatorFromDB.YoutubeUrl = _creator.YoutubeUrl;
-                creatorFromDB.KickUrl = _creator.KickUrl;
-                creatorFromDB.TikTokUrl = _creator.TikTokUrl;
-                creatorFromDB.InstagramUrl = _creator.InstagramUrl;
-                creatorFromDB.FacebookUrl = _creator.FacebookUrl;
-                creatorFromDB.GithubUrl = _creator.GithubUrl;
+                creatorFromDB.StreamingServices = _creator.StreamingServices.Count > 0 ? _creator.StreamingServices : new List<StreamingService>();
                 creatorFromDB.Active = _creator.Active;
                 await _context.SaveChangesAsync();
         }

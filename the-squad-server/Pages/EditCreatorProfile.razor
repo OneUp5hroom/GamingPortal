@@ -6,6 +6,7 @@
 @inject RoleManager<IdentityRole> _RoleManager;
 @inject GameManager<Game> _GameManager
 @inject CreatorManager<Creator> _CreatorManager;
+@inject StreamingServiceManager<StreamingService> _SSmanager
 @inject AuthenticationStateProvider AuthenticationStateProvider;
 @inject NavigationManager _navigationManager;
 <AuthorizeView Context="authContext">
@@ -55,45 +56,22 @@
                             placeholder="Please enter a URL to your profile picture" @bind-Value="CreatorModel.ProfileDescription" />
                         <label for="profilepic" class="form-label">profileDescription</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="twurl" class="form-label">Supported Streaming Services</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <span class="m-1 ms-2" id="basic-addon3">Twitch.tv</span>
-                            </div>
-                            <InputText id="twurl" class="form-control" placeholder="Twitch Channel Url" @bind-Value="CreatorModel.TwitchUrl" />
+                    @if (ColSS != null && ColSS.Count > 0)
+                    {
+                        <div class="mb-3">
+                            <label for="twurl" class="form-label">Supported Streaming Services</label>
+                            @foreach (var ss in ColSS)
+                            {
+                                <div class="input-group mb-3">
+                                    <div class="input-group-text">
+                                        <span class="m-1 ms-2" id="basic-addon3">@ss.Name</span>
+                                    </div>
+                                    <InputText class="form-control" placeholder="Channel Url" @bind-Value="ss.ServiceUrl" />
+                                    <InputText class="form-control" placeholder="Link a video" @bind-Value="ss.VideoUrl" />
+                                </div>
+                            }
                         </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <span class="m-1 ms-2" id="basic-addon3">YouTube</span>
-                            </div>
-                            <InputText id="yturl" class="form-control" placeholder="Youtube Channel URL" @bind-Value="CreatorModel.YoutubeUrl" />
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <span class="m-1 ms-2" id="basic-addon3">Kick</span>
-                            </div>
-                            <InputText id="kurl" class="form-control" placeholder="Kick Channel URL" @bind-Value="CreatorModel.KickUrl" />
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <span class="m-1 ms-2" id="basic-addon3">TikTok</span>
-                            </div>
-                            <InputText id="tturl" class="form-control" placeholder="TikTok URL" @bind-Value="CreatorModel.TikTokUrl" />
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <span class="m-1 ms-2" id="basic-addon3">Instagram</span>
-                            </div>
-                            <InputText id="inurl" class="form-control" placeholder="Instagram URL" @bind-Value="CreatorModel.InstagramUrl" />
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <span class="m-1 ms-2" id="basic-addon3">GitHub</span>
-                            </div>
-                            <InputText id="ghurl" class="form-control" placeholder="GitHub URL" @bind-Value="CreatorModel.GithubUrl" />
-                        </div>
-                    </div>
+                    }       
                     <label for="halo" class="form-label">Select the Games you stream / play.</label>
                     <div class="input-group mb-3">
                     @foreach (var game in ColGames)
@@ -153,6 +131,7 @@
     private bool isNew { get; set; } = true;
     private IdentityUser user = new IdentityUser();
     private List<Game> ColGames = new List<Game>();
+    private List<StreamingService> ColSS = new List<StreamingService>();
     private bool showWarning { get; set; } = false;
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationStateTask { get; set; }
@@ -165,12 +144,17 @@
         {
             user = await _UserManager.GetUserAsync(CurrentUser);
             ColGames = _GameManager.ListGames();
+            ColSS = _SSmanager.ListStreamingServices();
         }
         if (user != null) {
             GetCreatorProfile();
         }
         await InvokeAsync(() => StateHasChanged());
     }
+
+
+
+
     private async Task submit()
     {
         foreach(var gameObj in ColGames) {
@@ -205,6 +189,38 @@
                 }
             }
         }
+        foreach(var ssObj in ColSS) {
+            StreamingService existingSS = new StreamingService();
+            if (ssObj.ServiceUrl != null && ssObj.ServiceUrl != "")
+            {
+
+                if (CreatorModel.StreamingServices != null && CreatorModel.StreamingServices.Count > 0)
+                {
+                    existingSS = CreatorModel.StreamingServices.FirstOrDefault(s => s.Name == ssObj.Name);
+                }
+                if (existingSS != null && existingSS.StreamingServiceId != 0)
+                {
+                    existingSS = ssObj;
+                }
+                else
+                {
+                    var newSS = new StreamingService(ssObj.Name, ssObj.LogoUrl, ssObj.VideoUrl, ssObj.ServiceUrl);
+                    CreatorModel.StreamingServices.Add(newSS);
+                }
+            }
+            else
+            {
+                if (CreatorModel.StreamingServices != null && CreatorModel.StreamingServices.Count > 0)
+                {
+                    existingSS = CreatorModel.StreamingServices.FirstOrDefault(s => s.Name == ssObj.Name);
+                }
+                if (existingSS != null && existingSS.StreamingServiceId != 0)
+                {
+                    CreatorModel.StreamingServices.Remove(existingSS);
+                    await _SSmanager.DeleteAsync(existingSS);
+                }
+            }
+        }
         if (CreatorModel != null) {
             if (isNew)
             {
@@ -218,7 +234,6 @@
         }
     }
     private async Task updateCreator() {
-
         if (CreatorModel != null) {
             await _CreatorManager.UpdateCreator(CreatorModel);
             GetCreatorProfile();
@@ -257,6 +272,13 @@
                     {
                         ColGames.Where(g => g.Name == game.Name).FirstOrDefault().Active = game.Active;
                     }
+                }
+            }
+            if (CreatorModel.StreamingServices != null && CreatorModel.StreamingServices.Count > 0)
+            {
+                foreach (var ss in CreatorModel.StreamingServices)
+                {
+                    ColSS.Where(s => s.Name == ss.Name).FirstOrDefault().ServiceUrl = ss.ServiceUrl;
                 }
             }
         }

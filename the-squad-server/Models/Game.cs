@@ -14,7 +14,7 @@ public class Game
 
     [ForeignKey("CreatorId")]
     [InverseProperty("Games")]
-    public virtual Creator? GameCreatorAssignment { get; set; }
+    public virtual Creator? CreatorAssignment { get; set; }
 
     public Game()
     {

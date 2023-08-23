@@ -1,9 +1,38 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace the_squad_server.Models;
 
 public class StreamingService
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string LogoUrl { get; set; } = null!;
-    public bool Active { get; set; }
+    public int StreamingServiceId { get; set; }
+    [Required]
+    public string Name { get; set; }
+    [Url]
+    public string LogoUrl { get; set; }
+    [Url]
+    public string? ServiceUrl { get; set; }
+    [Url]
+    public string? VideoUrl { get; set; }
+    public bool Generic { get; set; }
+    
+    [ForeignKey("CreatorId")]
+    [InverseProperty("StreamingServices")]
+    public virtual Creator? CreatorAssignment { get; set; }
+
+    public StreamingService()
+    {
+
+    }
+
+    public StreamingService(string name, string logoUrl, string videoUrl, string serviceUrl)
+    {
+        Name = name;
+        LogoUrl = logoUrl;
+        VideoUrl = videoUrl;
+        ServiceUrl = serviceUrl;
+    }
+
+
+
 }

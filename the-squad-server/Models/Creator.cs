@@ -16,25 +16,8 @@ public class Creator
         [Required]
         [StringLength(2048,ErrorMessage = "{0} length must be between {2} and {1} characters.", MinimumLength = 6)]
         public string? ProfileDescription { get; set; }
-        
         public ICollection<Game>? Games { get; set;}
-
         public ICollection<StreamingService>? StreamingServices { get; set;}
-        [Url]
-        public string? TwitchUrl { get; set; }
-        [Url]
-        public string? YoutubeUrl { get; set; }
-        [Url]
-        public string? KickUrl { get; set; }
-        [Url]
-        public string? TikTokUrl { get; set; }
-        [Url]
-        public string? InstagramUrl { get; set; }
-        [Url]
-        public string? FacebookUrl { get; set; }
-        [Url]
-        public string? GithubUrl { get; set; }
-        [Url]
         public bool Active { get; set; }
 
 
@@ -46,13 +29,6 @@ public class Creator
                 ProfileDescription = "NEW";
                 Games = new List<Game>();
                 StreamingServices = new List<StreamingService>();
-                TwitchUrl = "NEW";
-                YoutubeUrl = "NEW";
-                KickUrl = "NEW";
-                TikTokUrl = "NEW";
-                InstagramUrl = "NEW";
-                FacebookUrl = "NEW";
-                GithubUrl = "NEW";
                 Active = false;
         }
         public Creator(bool Default){
@@ -64,13 +40,6 @@ public class Creator
                         ProfileDescription = "Default";
                         Games = new List<Game>();
                         StreamingServices = new List<StreamingService>();
-                        TwitchUrl = "Default";
-                        YoutubeUrl = "Default";
-                        KickUrl = "Default";
-                        TikTokUrl = "Default";
-                        InstagramUrl = "Default";
-                        FacebookUrl = "Default";
-                        GithubUrl = "Default";
                         Active = false;
                 }
         }
@@ -78,6 +47,8 @@ public class Creator
         {
                 UserId = user.Id;
                 UserName = user.UserName;
+                Games = new List<Game>();
+                StreamingServices = new List<StreamingService>();
                 Active = false;
         }
         public Creator(
@@ -86,13 +57,6 @@ public class Creator
                 string profileDescription,
                 ICollection<Game> games,
                 ICollection<StreamingService> streamingServices,
-                string? twitchUrl,
-                string? youtubeUrl,
-                string? kickUrl,
-                string? tikTokUrl,
-                string? instagramUrl,
-                string? facebookUrl,
-                string? githubUrl,
                 bool active
         )
         {
@@ -102,13 +66,6 @@ public class Creator
                 ProfileDescription = profileDescription;
                 Games = games;
                 StreamingServices = streamingServices;
-                TwitchUrl = twitchUrl;
-                YoutubeUrl = youtubeUrl;
-                KickUrl = kickUrl;
-                TikTokUrl = tikTokUrl;
-                InstagramUrl = instagramUrl;
-                FacebookUrl = facebookUrl;
-                GithubUrl = githubUrl;
                 Active = active;
         }
 }

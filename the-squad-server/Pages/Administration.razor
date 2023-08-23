@@ -6,6 +6,7 @@
 @inject RoleManager<IdentityRole> _RoleManager
 @inject CreatorManager<Creator> _CreatorManager;
 @inject GameManager<Game> _GameManager
+@inject StreamingServiceManager<StreamingService> _SSmanager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <h3>Administration</h3>
 <AuthorizeView>
@@ -216,6 +217,76 @@
                     </div>
                 </div>
             }
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>StreamingServiceId</th>
+                        <th>Streaming Service Name</th>
+                        <th>Game Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ss in ColSS)
+                    {
+                        <tr>
+                            <td>@ss.StreamingServiceId</td>
+                            <td>@ss.Name</td>
+                            <td>@ss.LogoUrl</td>
+                            @if (ss.ServiceUrl != null)
+                            {
+                                <td>@ss.ServiceUrl</td>
+                            }
+                            <td>
+                                <button class="btn btn-primary" @onclick="(() => EditSS(ss))">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" @onclick="AddNewSS">Add StreamingService</button>
+                <button class="btn btn-success" @onclick="ShowCreatorSS">Show / Edit Creator StreamingServices</button>
+            </div>
+            @if (ShowSSPopup)
+            {
+                <!-- This is the popup to create or edit a user -->
+                <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Edit Streaming Service</h3>
+                                <button type="button" class="close" @onclick="ClosePopup">
+                                    <span aria-hidden="true">X</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                @if (@objSS.Generic) {
+                                    <p>GENERIC RECORD</p>
+                                }
+                                <input class="form-control mb-3" type="text" placeholder="Name" @bind="objSS.Name" />
+                                <input class="form-control mb-3" type="text" placeholder="ImageUrl" @bind="objSS.LogoUrl" />
+                                <input class="form-control mb-3" type="text" placeholder="ServiceUrl" @bind="objSS.ServiceUrl" />
+                                <input class="form-control mb-3" type="text" placeholder="ServiceUrl" @bind="objSS.VideoUrl" />
+                                <br /><br />
+                                <button class="btn btn-primary" @onclick="SaveStreamingService">
+                                    Save
+                                </button>
+                                @if (objSS.ServiceUrl != null && objSS.ServiceUrl != "")
+                                {  
+                                    <button class="btn btn-danger" @onclick="DeleteSS">
+                                        Delete
+                                    </button>
+                                }
+                                <br />
+                                <span style="color:red">@strError</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         }
         else
         {
@@ -230,28 +301,67 @@
 
 @code {
 
-    // Property used to add or edit the currently selected user
+
     IdentityUser objUser = new IdentityUser();
-    Game objGame = new Game();
-    // Tracks the selected role for the currently selected user
     string CurrentUserRole { get; set; } = "Users";
     string NewRoleName { get; set; }
-    // Collection to display the existing users
+
+    Game objGame = new Game();
+    StreamingService objSS = new StreamingService();
+
     List<IdentityUser> ColUsers = new List<IdentityUser>();
     List<IdentityRole> ColRoles = new List<IdentityRole>();
     List<Game> ColGames = new List<Game>();
+    List<StreamingService> ColSS = new List<StreamingService>();
+
     List<string> Options = new List<string>() { "Users", "Administrators" };
-    // To hold any possible errors
+    
     string strError = "";
-    // To enable showing the Popup
     bool ShowPopup = false;
     bool ShowGamePopup = false;
+    bool ShowSSPopup = false;
     bool RolePopup = false;
 
+
+    //
+    // STARTUP
+    //
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
+    string ADMINISTRATION_ROLE = "Administrators";
+    System.Security.Claims.ClaimsPrincipal CurrentUser;
+    protected override async Task OnInitializedAsync()
+    {
+        GetUsers();
+        GetRoles();
+        ColGames = _GameManager.ListGames();
+        ColSS = _SSmanager.ListStreamingServices();
+        var RoleResult = await _RoleManager.FindByNameAsync(ADMINISTRATION_ROLE);
+        if (RoleResult == null)
+        {
+            await _RoleManager.CreateAsync(new IdentityRole(ADMINISTRATION_ROLE));
+        }
+        var user = await _UserManager.FindByNameAsync("OneUp5hroom");
+        if (user != null)
+        {
+            var UserResult = await _UserManager.IsInRoleAsync(user, ADMINISTRATION_ROLE);
+            if (!UserResult)
+            {
+                await _UserManager.AddToRoleAsync(user, ADMINISTRATION_ROLE);
+            }
+        }
+        CurrentUser = (await authenticationStateTask).User;
+    }
+
+    //
+    // GAME CRUD
+    //
     public void AddNewGame()
     {
         objGame = new Game();
         objGame.Generic = true;
+        objGame.Active = false;
         ShowGamePopup = true;
     }
     public void ShowCreatorGames()
@@ -282,7 +392,7 @@
     {
         try
         {
-            objGame.GameCreatorAssignment = _CreatorManager.GetDefaultCreator();
+            objGame.CreatorAssignment = _CreatorManager.GetDefaultCreator();
             await _GameManager.SetAsync(objGame);
             // Close the Popup
             ShowGamePopup = false;
@@ -296,23 +406,63 @@
     }
     async Task DeleteGame()
     {
-        // Close the Popup
         ShowGamePopup = false;
-        // Get the user
         var game = _GameManager.GetGame(objGame);
         if (game != null)
         {
-            // Delete the user
             await _GameManager.DeleteAsync(objGame);
         }
-        // Refresh Users
-        GetUsers();
+        ColGames = _GameManager.ListGames();
     }
 
+    //
+    // Streaming Service CRUD
+    //
+    public void AddNewSS()
+    {
+        objSS = new StreamingService();
+        objSS.Generic = true;
+        ShowSSPopup = true;
+    }
+    public void ShowCreatorSS()
+    {
+        ColSS = _SSmanager.ListStreamingServices(true);
+    }
+    async Task EditSS(StreamingService _ss)
+    {
+        objSS = _ss;
+        ShowSSPopup = true;
+    }
+    async Task SaveStreamingService()
+    {
+        try
+        {
+            objSS.CreatorAssignment = _CreatorManager.GetDefaultCreator();
+            await _SSmanager.SetAsync(objSS);
+            ShowSSPopup = false;
+            ColSS = _SSmanager.ListStreamingServices();
+        }
+        catch (Exception ex)
+        {
+            strError = ex.GetBaseException().Message;
+        }
+    }
+    async Task DeleteSS()
+    {
+        // Close the Popup
+        ShowSSPopup = false;
+        // Get the user
+        var SS = _SSmanager.GetStreamingService(objSS);
+        if (SS != null)
+        {
+            await _SSmanager.DeleteAsync(objSS);
+        }
+        ColSS = _SSmanager.ListStreamingServices();
+    }
 
-
-
-
+    //
+    // User CRUD
+    //
     void AddNewUser()
     {
         // Make new user
@@ -492,6 +642,7 @@
         ShowPopup = false;
         RolePopup = false;
         ShowGamePopup = false;
+        ShowSSPopup = false;
     }
     public void GetUsers()
     {
@@ -560,35 +711,4 @@
         }
     }
 
-
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationStateTask { get; set; }
-    string ADMINISTRATION_ROLE = "Administrators";
-    System.Security.Claims.ClaimsPrincipal CurrentUser;
-    protected override async Task OnInitializedAsync()
-    {
-        GetUsers();
-        GetRoles();
-        ColGames = _GameManager.ListGames();
-        // ensure there is a ADMINISTRATION_ROLE
-        var RoleResult = await _RoleManager.FindByNameAsync(ADMINISTRATION_ROLE);
-        if (RoleResult == null)
-        {
-            // Create ADMINISTRATION_ROLE Role
-            await _RoleManager.CreateAsync(new IdentityRole(ADMINISTRATION_ROLE));
-        }
-        var user = await _UserManager.FindByNameAsync("OneUp5hroom");
-        if (user != null)
-        {
-            // Is Admin@BlazorHelpWebsite.com in administrator role?
-            var UserResult = await _UserManager.IsInRoleAsync(user, ADMINISTRATION_ROLE);
-            if (!UserResult)
-            {
-                // Put admin in Administrator role
-                await _UserManager.AddToRoleAsync(user, ADMINISTRATION_ROLE);
-            }
-        }
-        // Get the current logged in user
-        CurrentUser = (await authenticationStateTask).User;
-    }
 }

@@ -291,5 +291,5 @@ C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\obj\De
 C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\obj\Debug\net7.0\the-squad-server.genruntimeconfig.cache
 C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\obj\Debug\net7.0\ref\the-squad-server.dll
 C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.MicrosoftAccount.dll
-C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\bin\Debug\net7.0\app.db
 C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\obj\Debug\net7.0\scopedcss\Pages\Creators.razor.rz.scp.css
+C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\bin\Debug\net7.0\app.db

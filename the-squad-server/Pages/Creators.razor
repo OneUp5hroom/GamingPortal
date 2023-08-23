@@ -1,187 +1,93 @@
 @page "/creators"
-@using Microsoft.AspNetCore.Authorization;
-@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Identity
+@using the_squad_server.Data
+@using the_squad_server.Models
 @inject UserManager<IdentityUser> _UserManager
 @inject RoleManager<IdentityRole> _RoleManager
+@inject CreatorManager<Creator> _CreatorManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div class="text-center">
-<hr />
-<h3>The Squad Content Creators</h3>
-<hr />
-</div>
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col">
-            <div class="card mx-auto" style="width: 50rem;">
-                <div class="card-header text-center">
-                    <img class="profile-image mb-1"
-                        src="https://static-cdn.jtvnw.net/jtv_user_pictures/629ff359-1220-46a7-88f8-cb7de15cf837-profile_image-70x70.png"
-                        alt="Card image cap" />
-                    <h1>LoneDaBeast</h1>
-                </div>
-                <div class="container text-center">
-                    <div class="row align-items-right">
-
+@if (weHaveCreators)
+{
+    <div class="text-center">
+    <hr />
+    <h3>The Squad Content Creators</h3>
+    <hr />
+    </div>
+    <div class="container-fluid p-3">
+        <div class="row justify-content-center">
+            @foreach (var creator in allCreators)
+            {
+                <div class="col">
+                    <div class="card mx-auto m-3">
+                        <div class="card-header bg-info-subtle text-center">
+                            <img class="profile-image mb-1"
+                                src="@creator.ProfilePictureUrl"
+                                alt="Card image cap" />
+                            <h2>@creator.UserName</h2>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="container text-center">
+                                    <div class="row align-items-center">
+                                        <div class="col-4 mx-auto">
+                                            <img class="stream-site d-block mx-auto" src="https://pngimg.com/uploads/twitch/twitch_PNG48.png" />
+                                            <a class="btn btn-outline-info m-3 text-nowrap" role="button"
+                                                href="@creator.TwitchUrl">
+                                                Follow Me
+                                            </a>
+                                        </div>
+                                        <div class="col align-self-center">
+                                            <iframe src="https://player.twitch.tv/?video=1897404654&parent=the-squad.games"
+                                                frameborder="0" allowfullscreen="true" scrolling="no" height="171"
+                                                width="304" class="d-block mx-auto"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            @if (creator.Games.Count > 0)
+                            {
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row align-items-right">
+                                            <h5>Games I Play</h5>
+                                        </div>
+                                        <div class="row align-items-center">
+                                            @foreach (var game in creator.Games)
+                                            {
+                                                <div class="col">
+                                                    <img class="img-thumbnail"
+                                                        src="@game.ImageUrl"
+                                                        alt="@game.Name">
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="container">
-                            <div class="row align-items-center p-3">
-                                <div class="col">
-                                    <img class="stream-site" src="https://pngimg.com/uploads/twitch/twitch_PNG48.png" />
-                                </div>
-                                <div class="col">
-                                    <a class="btn btn-outline-info" role="button"
-                                        href="https://www.twitch.tv/lonedabeast">
-                                        Follow Me on Twitch
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <iframe src="https://player.twitch.tv/?video=1897404654&parent=the-squad.games"
-                                        frameborder="0" allowfullscreen="true" scrolling="no" height="171"
-                                        width="304"></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="container text-center">
-                            <div class="row align-items-right">
-                                <h5>Games I Play</h5>
-                            </div>
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <img class="game-image"
-                                        src="https://static-cdn.jtvnw.net/ttv-boxart/506416_IGDB-285x380.jpg"
-                                        alt="Card image cap">
-                                </div>
-                                <div class="col">
-                                    <img class="game-image"
-                                        src="https://static-cdn.jtvnw.net/ttv-boxart/515024-285x380.jpg"
-                                        alt="Card image cap">
-                                </div>
-                                <div class="col">
-                                    <img class="game-image"
-                                        src="https://static-cdn.jtvnw.net/ttv-boxart/271304_IGDB-285x380.jpg"
-                                        alt="Card image cap">
-                                </div>
-                                <div class="col">
-                                    <img class="game-image"
-                                        src="https://static-cdn.jtvnw.net/ttv-boxart/1041_IGDB-285x380.jpg"
-                                        alt="Card image cap">
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card mx-auto" style="width: 50rem;">
-                <div class="card-header text-center">
-                    <img class="profile-image mb-1"
-                        src="https://static-cdn.jtvnw.net/jtv_user_pictures/f156b5de-8d70-4803-b8d0-a158d0d42bd5-profile_image-70x70.png"
-                        alt="Card image cap" />
-                    <h1>OneUp5hroom</h1>
-                </div>
-                <div class="container text-center">
-                    <div class="row align-items-right">
-
-                    </div>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="container">
-                            <div class="row align-items-center p-3">
-                                <div class="col">
-                                    <img class="stream-site" src="https://pngimg.com/uploads/twitch/twitch_PNG48.png" />
-                                </div>
-                                <div class="col">
-                                    <a class="btn btn-outline-info" role="button"
-                                        href="https://www.twitch.tv/oneup5hroom">
-                                        Follow Me on Twitch
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <iframe src="https://player.twitch.tv/?video=1895606233&parent=the-squad.games"
-                                        frameborder="0" allowfullscreen="true" scrolling="no" height="171"
-                                        width="304"></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="container text-center">
-                            <div class="row align-items-right">
-                                <h5>Games I Play</h5>
-                            </div>
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <img class="game-image"
-                                        src="https://static-cdn.jtvnw.net/ttv-boxart/506416_IGDB-285x380.jpg"
-                                        alt="Card image cap">
-                                </div>
-                                <div class="col">
-                                    <img class="game-image"
-                                        src="https://static-cdn.jtvnw.net/ttv-boxart/27471_IGDB-285x380.jpg"
-                                        alt="Card image cap">
-                                </div>
-                                <div class="col">
-                                    <img class="game-image"
-                                        src="https://static-cdn.jtvnw.net/ttv-boxart/271304_IGDB-285x380.jpg"
-                                        alt="Card image cap">
-                                </div>
-                                <div class="col">
-                                    <img class="game-image"
-                                        src="https://static-cdn.jtvnw.net/ttv-boxart/1469308723-285x380.jpg"
-                                        alt="Card image cap">
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            }
         </div>
     </div>
-</div>
-
+}
 @code {
-    bool serverUp = false;
-    string color = "grey";
-    string statusText = "unknown";
-
-    Random randomGenerator = new Random();
-    async Task startServer(string id)
-    {
-        color = "grey";
-        statusText = "Pending";
-        await Task.Delay(1500);
-        color = "green";
-        statusText = "Online";
-        serverUp = true;
-    }
-    void serverOnline()
-    {
-        var random2 = randomGenerator.Next(2);
-        if (random2 == 0)
-        {
-            serverUp = true;
-            color = "red";
-            statusText = "Offline";
-        }
-        else
-        {
-            serverUp = false;
-            color = "green";
-            statusText = "Online";
-        }
-    }
+    bool weHaveCreators = false;
+    private List<Creator> allCreators = new List<Creator>();
 
     protected override async Task OnInitializedAsync()
     {
-        serverOnline();
+        GetCreators();
+    }
+
+    private void GetCreators()
+    {
+        allCreators = _CreatorManager.GetCreatorsAll();
+        if (allCreators.Any())
+        {
+            weHaveCreators = true;
+        }
     }
 }

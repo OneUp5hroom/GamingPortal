@@ -12,6 +12,8 @@
     width: 10em;
 }
 .stream-site {
-    width: 6em;
-    margin: 2em;
+    width: 5em;
+}
+.mw-3 {
+    min-width: 100px;
 }

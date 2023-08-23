@@ -9,7 +9,8 @@ main[b-fd48cv14ua] {
 }
 
 .sidebar[b-fd48cv14ua] {
-    background-image: linear-gradient(180deg, rgb(8, 79, 92) 0%, #04300b 70%);
+    background-image: linear-gradient(180deg, var(--bs-info-bg-subtle) 0%, var(--bs-success-bg-subtle) 70%);
+    min-width: 250px;
 }
 
 .top-row[b-fd48cv14ua] {

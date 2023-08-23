@@ -1,0 +1,264 @@
+@page "/edit-creator-profile"
+@using Microsoft.AspNetCore.Identity;
+@using the_squad_server.Data;
+@using the_squad_server.Models;
+@inject UserManager<IdentityUser> _UserManager;
+@inject RoleManager<IdentityRole> _RoleManager;
+@inject GameManager<Game> _GameManager
+@inject CreatorManager<Creator> _CreatorManager;
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+@inject NavigationManager _navigationManager;
+<AuthorizeView Context="authContext">
+    <Authorized>
+        @if (CreatorModel != null)
+        {
+        <h3>Creator Profile</h3>
+        <partial name="_StatusMessage" for="StatusMessage" />
+        @if (isNew)
+        {
+            <p class="text-info">
+                You do not have a Creator Profile set up for this site.
+                Add one below!
+            </p>
+        } else
+        {
+            <p class="text-info">
+                The badass <span class="text-danger">@user.UserName</span> hath graced us with their presence.
+            </p>
+        }
+        <div class="row">
+            <div class="col-md-8 pb-3">
+                <a class="btn-close float-end" role="button" href="/" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <EditForm Model="@CreatorModel" OnValidSubmit="@submit" Context="formContext">
+                    <div class="form-floating mb-3">
+                        <div class="input-group-text">
+                            <InputCheckbox id="Active" class="form-check-input mt-0" aria-describedby="basic-addon3" @bind-Value="CreatorModel.Active" />
+                            <span class="m-1 ms-2" id="basic-addon3">Activate Creator Profile</span>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText class="form-control" id="userName" placeholder="UserId"
+                            @bind-Value="CreatorModel.UserName" disabled />
+                        <label for="userName" class="form-label">GamerTag</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText id="profilepic" class="form-control"
+                            placeholder="Please enter a URL to your profile picture" @bind-Value="CreatorModel.ProfilePictureUrl" />
+                        <label for="profilepic" class="form-label">Profile Picture URL</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText id="profileDescription" class="form-control"
+                            placeholder="Please enter a URL to your profile picture" @bind-Value="CreatorModel.ProfileDescription" />
+                        <label for="profilepic" class="form-label">profileDescription</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="twurl" class="form-label">Supported Streaming Services</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <span class="m-1 ms-2" id="basic-addon3">Twitch.tv</span>
+                            </div>
+                            <InputText id="twurl" class="form-control" placeholder="Twitch Channel Url" @bind-Value="CreatorModel.TwitchUrl" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <span class="m-1 ms-2" id="basic-addon3">YouTube</span>
+                            </div>
+                            <InputText id="yturl" class="form-control" placeholder="Youtube Channel URL" @bind-Value="CreatorModel.YoutubeUrl" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <span class="m-1 ms-2" id="basic-addon3">Kick</span>
+                            </div>
+                            <InputText id="kurl" class="form-control" placeholder="Kick Channel URL" @bind-Value="CreatorModel.KickUrl" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <span class="m-1 ms-2" id="basic-addon3">TikTok</span>
+                            </div>
+                            <InputText id="tturl" class="form-control" placeholder="TikTok URL" @bind-Value="CreatorModel.TikTokUrl" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <span class="m-1 ms-2" id="basic-addon3">Instagram</span>
+                            </div>
+                            <InputText id="inurl" class="form-control" placeholder="Instagram URL" @bind-Value="CreatorModel.InstagramUrl" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <span class="m-1 ms-2" id="basic-addon3">GitHub</span>
+                            </div>
+                            <InputText id="ghurl" class="form-control" placeholder="GitHub URL" @bind-Value="CreatorModel.GithubUrl" />
+                        </div>
+                    </div>
+                    <label for="halo" class="form-label">Select the Games you stream / play.</label>
+                    <div class="input-group mb-3">
+                    @foreach (var game in ColGames)
+                    {
+                        <InputCheckbox class="form-check-input mt-0" aria-describedby="basic-addon3" @bind-Value="game.Active" />
+                        <span class="m-1 ms-2" id="basic-addon3">@game.Name</span>
+                    }
+                    </div>
+                    @if (isNew)
+                    {
+                        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign Up as a Creator</button>
+                    }
+                    else
+                    {
+                        <div class="d-grid gap-2 d-md-block">
+                            <button class="btn btn-primary" type="submit">Update Creator Profile</button>
+                            <a class="btn btn-warning" role="button" href="/" >Cancel</a>
+                            <button class="btn btn-danger" type="button" data-toggle="modal" @onclick="deleteWarning">DELETE Creator Profile</button>
+                        </div>
+                        @if (showWarning)
+                        {
+                            <div style="background-color: rgba(131, 130, 130, 0.5); position: absolute; top: 0; left: 0; width: 100%; height: 100%" tabindex="-1" />
+                            <div class="modal" tabindex="-2" style="display:block" role="dialog" data-backdrop="static">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Are you sure?</h3>
+                                            <button type="button" class="close"
+                                                    @onclick="cancelDelete">
+                                                <span aria-hidden="true">X</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete this Creator Profile?<br /> (this cannot be undone)</p>
+                                            <div class="d-grid gap-2">
+                                                <button class="btn btn-danger" type="button" @onclick="delete">YES (DELETE)</button>
+                                                <button class="btn btn-success" type="button" @onclick="cancelDelete">NO</button>
+                                                <button class="btn btn-info" type="button" @onclick="cancelDelete">MAYBE SO?!</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </EditForm>
+            </div>
+        </div>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not loggged in.</p>
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+
+    private bool isNew { get; set; } = true;
+    private IdentityUser user = new IdentityUser();
+    private List<Game> ColGames = new List<Game>();
+    private bool showWarning { get; set; } = false;
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
+    System.Security.Claims.ClaimsPrincipal CurrentUser;
+    Creator? CreatorModel = new Creator();
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = (await authenticationStateTask).User;
+        if (CurrentUser != null)
+        {
+            user = await _UserManager.GetUserAsync(CurrentUser);
+            ColGames = _GameManager.ListGames();
+        }
+        if (user != null) {
+            GetCreatorProfile();
+        }
+        await InvokeAsync(() => StateHasChanged());
+    }
+    private async Task submit()
+    {
+        foreach(var gameObj in ColGames) {
+            if (gameObj.Active == true)
+            {
+                Game existingGame = new Game();
+                if (CreatorModel.Games != null && CreatorModel.Games.Count > 0)
+                {
+                    existingGame = CreatorModel.Games.FirstOrDefault(g => g.Name == gameObj.Name);
+                }
+                if (existingGame != null && existingGame.GameId != 0)
+                {
+                    existingGame = gameObj;
+                }
+                else
+                {
+                    var newGame = new Game(gameObj.Name, gameObj.ImageUrl, gameObj.Active);
+                    CreatorModel.Games.Add(newGame);
+                }
+            }
+            else
+            {
+                Game existingGame = new Game();
+                if (CreatorModel.Games != null && CreatorModel.Games.Count > 0)
+                {
+                    existingGame = CreatorModel.Games.FirstOrDefault(g => g.Name == gameObj.Name);
+                }
+                if (existingGame != null && existingGame.GameId != 0)
+                {
+                    CreatorModel.Games.Remove(existingGame);
+                    await _GameManager.DeleteAsync(existingGame);
+                }
+            }
+        }
+        if (CreatorModel != null) {
+            if (isNew)
+            {
+                await _CreatorManager.SetCreator(CreatorModel);
+            }
+            else
+            {
+                await _CreatorManager.UpdateCreator(CreatorModel);
+            }
+            GetCreatorProfile();
+        }
+    }
+    private async Task updateCreator() {
+
+        if (CreatorModel != null) {
+            await _CreatorManager.UpdateCreator(CreatorModel);
+            GetCreatorProfile();
+        }
+    }
+    private void cancelDelete()
+    {
+        showWarning = false;
+    }
+    private void deleteWarning()
+    {
+        showWarning = true;
+    }
+    private async Task delete()
+    {
+        
+        if (CreatorModel != null) {
+            await _CreatorManager.DeleteCreator(CreatorModel);
+            _navigationManager.NavigateTo("/");
+        }
+    }
+    private void GetCreatorProfile()
+    {
+        CreatorModel = _CreatorManager.GetCreator(user);
+        if(CreatorModel == null)
+        {
+            CreatorModel = new Creator(user);
+            isNew = true;
+        } else {
+            isNew = false;
+            if (CreatorModel.Games != null && CreatorModel.Games.Count > 0)
+            {
+                foreach (var game in CreatorModel.Games)
+                {
+                    if (game.Active)
+                    {
+                        ColGames.Where(g => g.Name == game.Name).FirstOrDefault().Active = game.Active;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -32,6 +32,15 @@ public class StreamingService
         VideoUrl = videoUrl;
         ServiceUrl = serviceUrl;
     }
+    public StreamingService(StreamingService _ss)
+    {
+        StreamingServiceId = 0;
+        Name = _ss.Name;
+        LogoUrl = _ss.LogoUrl;
+        VideoUrl = _ss.VideoUrl;
+        ServiceUrl = _ss.ServiceUrl;
+        Generic = false;
+    }
 
 
 

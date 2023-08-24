@@ -84,6 +84,10 @@
               "target": "Package",
               "version": "[7.0.9, )"
             },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
             "bootstrap": {
               "target": "Package",
               "version": "[5.3.1, )"

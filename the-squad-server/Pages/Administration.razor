@@ -1,13 +1,16 @@
 @page "/administration"
-@using Microsoft.AspNetCore.Identity;
-@using the_squad_server.Data;
-@using the_squad_server.Models;
+@using Microsoft.AspNetCore.Identity
+@using the_squad_server.Data
+@using the_squad_server.Models
 @inject UserManager<IdentityUser> _UserManager
 @inject RoleManager<IdentityRole> _RoleManager
-@inject CreatorManager<Creator> _CreatorManager;
+@inject CreatorManager<Creator> _CreatorManager
 @inject GameManager<Game> _GameManager
 @inject StreamingServiceManager<StreamingService> _SSmanager
+@inject ServerManager<Server> _ServerManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+
+
 <h3>Administration</h3>
 <AuthorizeView>
     <Authorized>
@@ -29,7 +32,6 @@
                             <td>@user.UserName</td>
                             <td>@user.Email</td>
                             <td>
-                                <!-- Edit the current forecast -->
                                 <button class="btn btn-primary" @onclick="(() => EditUser(user))">
                                     Edit
                                 </button>
@@ -41,25 +43,20 @@
 
             @if (ShowPopup)
             {
-                <!-- This is the popup to create or edit a user -->
                 <div class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h3 class="modal-title">Edit User</h3>
-                                <!-- Button to close the popup -->
                                 <button type="button" class="close" @onclick="ClosePopup">
                                     <span aria-hidden="true">X</span>
                                 </button>
                             </div>
-                            <!-- Edit form for the current user -->
                             <div class="modal-body">
-                                <!-- Only show Id if not a new user -->
                                 @if (objUser.Id != "")
                                 {
                                     <p>@objUser.Id</p>
                                 }
-                                <!-- Only allow edit if a new user -->
                                 @if (objUser.Id != "")
                                 {
                                     <p>@objUser.UserName</p>
@@ -80,11 +77,9 @@
                                     }
                                 </select>
                                 <br /><br />
-                                <!-- Button to save the user -->
                                 <button class="btn btn-primary" @onclick="SaveUser">
                                     Save
                                 </button>
-                                <!-- Only show delete button if not a new record -->
                                 @if (objUser.Id != "")
                                 {
                                     <button class="btn btn-danger" @onclick="DeleteUser">
@@ -129,22 +124,18 @@
             <button class="btn btn-success" @onclick="SetRolePopup">Add Role</button>
             @if (RolePopup)
             {
-                <!-- This is the popup to create or edit a user -->
                 <div class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h3 class="modal-title">New Role</h3>
-                                <!-- Button to close the popup -->
                                 <button type="button" class="close" @onclick="ClosePopup">
                                     <span aria-hidden="true">X</span>
                                 </button>
                             </div>
-                            <!-- Edit form for the current user -->
                             <div class="modal-body">
                                 <input class="form-control" type="text" placeholder="Role Name" @bind="NewRoleName" />
                                 <br /><br />
-                                <!-- Button to save the user -->
                                 <button class="btn btn-primary" @onclick="AddNewRole">
                                     Save
                                 </button>
@@ -184,7 +175,6 @@
             </div>
             @if (ShowGamePopup)
             {
-                <!-- This is the popup to create or edit a user -->
                 <div class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -252,7 +242,6 @@
             </div>
             @if (ShowSSPopup)
             {
-                <!-- This is the popup to create or edit a user -->
                 <div class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -287,6 +276,116 @@
                     </div>
                 </div>
             }
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>ServerRoleNames</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var server in ColServers)
+                    {
+                        <tr>
+                            <td>@server.Id</td>
+                            <td>@server.Name</td>
+                            <td>@server.Status</td>
+                            <td>@server.ServerPicture</td>
+                            <td>
+                                <button class="btn btn-primary" @onclick="(() => EditServer(server))">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-grid gap-2">
+                <button class="btn btn-success" @onclick="AddNewServer">Add Server</button>
+            </div>
+            @if (ShowServerPopup)
+            {
+                <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Edit Server</h3>
+                                <button type="button" class="close" @onclick="ClosePopup">
+                                    <span aria-hidden="true">X</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input class="form-control mb-3" type="text" placeholder="Id" @bind="objServer.Id" disabled/>
+                                <input class="form-control mb-3" type="text" placeholder="Name" @bind="objServer.Name" />
+                                <input class="form-control mb-3" type="text" placeholder="Picture" @bind="objServer.ServerPicture" />
+                                <input class="form-control mb-3" type="text" placeholder="Status" @bind="objServer.Status" disabled/>
+                                <table>
+                                    @if (objServer.ServerRoleNames != null && objServer.ServerRoleNames.Count > 0)
+                                    @foreach (var role in objServer.ServerRoleNames)
+                                    {
+                                        <tr>
+                                            <td>@role.Name</td>
+                                            <td>
+                                                <button class="btm btn-success" @onclick="(() => EditServerRole(role))" >Edit</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                                <button class="btm btn-success" @onclick="AddServerRole">New Server Role</button>
+                                <br /><br />
+                                <button class="btn btn-primary" @onclick="SaveServer">
+                                    Save
+                                </button>
+                                @if (objSS.ServiceUrl != null && objSS.ServiceUrl != "")
+                                {  
+                                    <button class="btn btn-danger" @onclick="DeleteServer">
+                                        Delete
+                                    </button>
+                                }
+                                <br />
+                                <span style="color:red">@strError</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (ShowServerRolePopup)
+            {
+                <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Edit Server Roles</h3>
+                                <button type="button" class="close" @onclick="ClosePopupSR">
+                                    <span aria-hidden="true">X</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input class="form-control mb-3" type="text" placeholder="Id" @bind="objServerRole.Id" disabled/>
+                                <input class="form-control mb-3" type="text" placeholder="Name" @bind="objServerRole.Name" />
+                                <input class="form-control mb-3" type="text" placeholder="MapName" @bind="objServerRole.MappedIdentityRole" />
+                                <br /><br />
+                                <button class="btn btn-primary" @onclick="SaveServerRole">
+                                    Save
+                                </button>
+                                @if (objSS.ServiceUrl != null && objSS.ServiceUrl != "")
+                                {  
+                                    <button class="btn btn-danger" @onclick="DeleteServer">
+                                        Delete
+                                    </button>
+                                }
+                                <br />
+                                <span style="color:red">@strError</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
         }
         else
         {
@@ -300,8 +399,6 @@
 
 
 @code {
-
-
     IdentityUser objUser = new IdentityUser();
     string CurrentUserRole { get; set; } = "Users";
     string NewRoleName { get; set; }
@@ -309,6 +406,9 @@
     Game objGame = new Game();
     StreamingService objSS = new StreamingService();
 
+    Server objServer = new Server();
+    ServerRole objServerRole = new ServerRole();
+    List<Server> ColServers = new List<Server>();
     List<IdentityUser> ColUsers = new List<IdentityUser>();
     List<IdentityRole> ColRoles = new List<IdentityRole>();
     List<Game> ColGames = new List<Game>();
@@ -321,6 +421,8 @@
     bool ShowGamePopup = false;
     bool ShowSSPopup = false;
     bool RolePopup = false;
+    bool ShowServerPopup = false;
+    bool ShowServerRolePopup = false;
 
 
     //
@@ -335,6 +437,7 @@
     {
         GetUsers();
         GetRoles();
+        ColServers = _ServerManager.ListServers();
         ColGames = _GameManager.ListGames();
         ColSS = _SSmanager.ListStreamingServices();
         var RoleResult = await _RoleManager.FindByNameAsync(ADMINISTRATION_ROLE);
@@ -353,6 +456,84 @@
         }
         CurrentUser = (await authenticationStateTask).User;
     }
+
+    //
+    // Server CRUD
+    //
+    public void ClosePopupSR()
+    {
+        ShowServerRolePopup = false;
+        ShowServerPopup = true;
+    }
+    public void AddNewServer()
+    {
+        objServer = new Server();
+        ShowServerPopup = true;
+    }
+    async Task EditServer(Server _server)
+    {
+        objServer = _server;
+        ShowServerPopup = true;
+    }
+    public void AddServerRole()
+    {
+        objServerRole = new ServerRole();
+        ShowServerPopup = false;
+        ShowServerRolePopup = true;
+    }
+    async Task EditServerRole(ServerRole _role)
+    {
+        objServerRole = _role;
+        ShowServerPopup = false;
+        ShowServerRolePopup = true;
+    }
+    async Task SaveServerRole()
+    {
+        ShowServerRolePopup = false;
+        ServerRole existingRole = null!;
+        if (objServer.ServerRoleNames != null && objServer.ServerRoleNames.Count > 0)
+        {
+            existingRole = objServer.ServerRoleNames.FirstOrDefault(r => r.Id == objServerRole.Id);
+        }
+        if (existingRole != null && existingRole.Id == objServerRole.Id)
+        {
+            existingRole.Name = objServerRole.Name;
+            existingRole.MappedIdentityRole = objServerRole.MappedIdentityRole;
+        }
+        else
+        {
+            objServer.ServerRoleNames.Add(objServerRole);
+        }
+        ColServers = _ServerManager.ListServers();
+        ShowServerPopup = true;
+    }
+    async Task SaveServer()
+    {
+        try
+        {
+            await _ServerManager.SetAsync(objServer);
+            ShowServerPopup = false;
+            await InvokeAsync(() => StateHasChanged());
+            ColServers = _ServerManager.ListServers();
+        }
+        catch (Exception ex)
+        {
+            strError = ex.GetBaseException().Message;
+        }
+    }
+    async Task DeleteServer()
+    {
+        ShowServerPopup = false;
+        var server = _ServerManager.GetServer(objServer);
+        if (server != null)
+        {
+            await _ServerManager.DeleteAsync(objServer);
+        }
+        ColServers = _ServerManager.ListServers();
+    }
+
+
+
 
     //
     // GAME CRUD
@@ -643,6 +824,8 @@
         RolePopup = false;
         ShowGamePopup = false;
         ShowSSPopup = false;
+        ShowServerPopup = false;
+        ShowServerRolePopup = false;
     }
     public void GetUsers()
     {
@@ -695,7 +878,6 @@
         {
             try
             {
-                // Make new role
                 await _RoleManager.CreateAsync(new IdentityRole(NewRoleName));
                 GetRoles();
                 ClosePopup();
@@ -710,5 +892,4 @@
             strError = "Role Name cannot be Empty";
         }
     }
-
 }

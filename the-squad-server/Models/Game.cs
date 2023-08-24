@@ -27,4 +27,11 @@ public class Game
         ImageUrl = imageUrl;
         Active = active;
     }
+    public Game (Game _game)
+    {
+        Name = _game.Name;
+        ImageUrl = _game.ImageUrl;
+        Active = false;
+        Generic = false;
+    }
 }

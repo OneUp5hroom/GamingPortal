@@ -1,9 +1,14 @@
 @page "/servers"
-@using Microsoft.AspNetCore.Authorization;
-@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Identity
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using the_squad_server.API
+@using the_squad_server.Models
 @inject UserManager<IdentityUser> _UserManager
 @inject RoleManager<IdentityRole> _RoleManager
+@inject APIService<Server> _APIService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILogger<Servers> logger;
 
 <h3>What Server Do You Want To Play On?</h3>
 <br /><br /><br />
@@ -39,7 +44,7 @@
 
                                 @if (serverUp)
                                 {
-                                    <button type="button" @onclick=@(() => startServer("c07b2e00-21f3-4dfd-9910-c2cf65d2f125"))
+                                    <button type="button" @onclick=@(() => startServer(new Server()))
                                         class="btn btn-sm btn-primary">Start Server</button>
                                 }
                                 else
@@ -83,7 +88,7 @@
 
                                 @if (serverUp)
                                 {
-                                    <button type="button" @onclick=@(() => startServer("c07b2e00-21f3-4dfd-9910-c2cf65d2f125"))
+                                    <button type="button" @onclick=@(() => startServer(new Server()))
                                         class="btn btn-sm btn-primary">Start Server</button>
                                 }
                                 else
@@ -111,19 +116,44 @@
 
 
 @code {
+    private IdentityUser user = new IdentityUser();
+
     bool serverUp = false;
     string color = "grey";
     string statusText = "unknown";
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
+    System.Security.Claims.ClaimsPrincipal CurrentUser;
+    Creator? CreatorModel = new Creator();
 
     Random randomGenerator = new Random();
-    async Task startServer(string id)
+    async Task startServer(Server _server)
     {
-        color = "grey";
-        statusText = "Pending";
-        await Task.Delay(1500);
-        color = "green";
-        statusText = "Online";
-        serverUp = true;
+        bool _valid = false;
+        user = await _UserManager.GetUserAsync(CurrentUser);
+        foreach (var role in _server.ServerRoleNames)
+        {
+            var UserResult = await _UserManager.IsInRoleAsync(user, role.Name);
+            if (UserResult)
+            {
+                logger.LogInformation(string.Format(
+                    "{0} - UserId: {1} UserName: {2}; Is in approved role: {3}; Requested start server {4}:{5};",
+                    DateTime.UtcNow.ToString("o", System.Globalization.CultureInfo.InvariantCulture),
+                    user.Id,
+                    user.UserName,
+                    role,
+                    _server.Name,
+                    _server.Id
+                ));
+                _valid = true;
+                break;
+            }
+        }
+        if (_valid)
+        {
+            await _APIService.PostServerActionAsync(_server);
+        }
+        
     }
     void serverOnline()
     {
@@ -144,6 +174,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        CurrentUser = (await authenticationStateTask).User;
         serverOnline();
     }
 }

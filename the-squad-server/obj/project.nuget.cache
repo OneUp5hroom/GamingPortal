@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2BsqbACH4U+hQeTLXVTPeuGeH13YxnULULCBDjRhZvG6ASePA1wQZw01SAzeZg0BGXA2DSzVd9qxfpuXJtGwpw==",
+  "dgSpecHash": "4aXoAIta94zgLj/ucTvLEHONu8WxazIC2tOmB0Jqft1GAvwvGvA1oHQFPOHegDMlXMw7x4ty8t5XdInUi3EmBQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\the-squad-server.csproj",
   "expectedPackageFiles": [
@@ -157,6 +157,7 @@
     "C:\\Users\\guard\\.nuget\\packages\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\guard\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\guard\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
+    "C:\\Users\\guard\\.nuget\\packages\\serilog\\3.0.1\\serilog.3.0.1.nupkg.sha512",
     "C:\\Users\\guard\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.4\\sqlitepclraw.bundle_e_sqlite3.2.1.4.nupkg.sha512",
     "C:\\Users\\guard\\.nuget\\packages\\sqlitepclraw.core\\2.1.4\\sqlitepclraw.core.2.1.4.nupkg.sha512",
     "C:\\Users\\guard\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.4\\sqlitepclraw.lib.e_sqlite3.2.1.4.nupkg.sha512",

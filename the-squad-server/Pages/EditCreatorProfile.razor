@@ -143,8 +143,24 @@
         if (CurrentUser != null)
         {
             user = await _UserManager.GetUserAsync(CurrentUser);
-            ColGames = _GameManager.ListGames();
-            ColSS = _SSmanager.ListStreamingServices();
+            var allGames = _GameManager.ListGames();
+            if (allGames != null && allGames.Count > 0)
+            {
+                foreach (var game in allGames)
+                {
+                    var gameInstance = new Game(game);
+                    ColGames.Add(gameInstance);
+                }
+            }
+            var allSS = _SSmanager.ListStreamingServices();
+            if (allSS != null && allSS.Count > 0)
+            {
+                foreach (var ss in allSS)
+                {
+                    var SSinstance = new StreamingService(ss);
+                    ColSS.Add(SSinstance);
+                }
+            }
         }
         if (user != null) {
             GetCreatorProfile();
@@ -198,9 +214,11 @@
                 {
                     existingSS = CreatorModel.StreamingServices.FirstOrDefault(s => s.Name == ssObj.Name);
                 }
-                if (existingSS != null && existingSS.StreamingServiceId != 0)
+                if (existingSS != null && existingSS.LogoUrl != null && existingSS.ServiceUrl != null)
                 {
-                    existingSS = ssObj;
+                    CreatorModel.StreamingServices.Remove(existingSS);
+                    await _SSmanager.DeleteAsync(existingSS);
+                    CreatorModel.StreamingServices.Add(ssObj);
                 }
                 else
                 {
@@ -210,7 +228,7 @@
             }
             else
             {
-                if (CreatorModel.StreamingServices != null && CreatorModel.StreamingServices.Count > 0)
+                if (CreatorModel.StreamingServices != null)
                 {
                     existingSS = CreatorModel.StreamingServices.FirstOrDefault(s => s.Name == ssObj.Name);
                 }
@@ -279,6 +297,7 @@
                 foreach (var ss in CreatorModel.StreamingServices)
                 {
                     ColSS.Where(s => s.Name == ss.Name).FirstOrDefault().ServiceUrl = ss.ServiceUrl;
+                    ColSS.Where(s => s.Name == ss.Name).FirstOrDefault().VideoUrl = ss.VideoUrl;
                 }
             }
         }

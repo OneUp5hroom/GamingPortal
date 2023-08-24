@@ -16,7 +16,7 @@ public class CreatorManager<Tcrt> : IDisposable where Tcrt : class
     }
     public Creator GetCreator(IdentityUser _user)
     {
-        var creator = _context.Creators.FirstOrDefault(c => c.UserId == _user.Id);
+        var creator = _context.Creators.Include(c => c.Games).Include(c => c.StreamingServices).FirstOrDefault(c => c.UserId == _user.Id);
         return creator;
     }
     public Creator GetDefaultCreator()

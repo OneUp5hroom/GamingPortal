@@ -293,4 +293,3 @@ C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\obj\De
 C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.MicrosoftAccount.dll
 C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\obj\Debug\net7.0\scopedcss\Pages\Creators.razor.rz.scp.css
 C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\bin\Debug\net7.0\Serilog.dll
-C:\Users\guard\Documents\Development\Blazor\GamingPortal\the-squad-server\bin\Debug\net7.0\app.db

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "i21ldsdFqSmBWB1PNIDftx4Suy1aM5Si300kIsBHNIg=",
+  "Hash": "ZtNbxTKzFL65+ebCNnITiYvjsz47PHbLmfcbrsWAkqc=",
   "Source": "the-squad-server",
   "BasePath": "_content/the-squad-server",
   "Mode": "Default",
@@ -2023,12 +2023,12 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\wwwroot\\favicon1.png",
+      "Identity": "C:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\wwwroot\\favicon.png",
       "SourceId": "the-squad-server",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\wwwroot\\",
       "BasePath": "_content/the-squad-server",
-      "RelativePath": "favicon1.png",
+      "RelativePath": "favicon.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -2037,7 +2037,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\favicon1.png"
+      "OriginalItemSpec": "wwwroot\\favicon.png"
     }
   ]
 }

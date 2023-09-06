@@ -229,8 +229,8 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\wwwroot\\favicon1.png",
-      "PackagePath": "staticwebassets\\favicon1.png"
+      "Id": "C:\\Users\\guard\\Documents\\Development\\Blazor\\GamingPortal\\the-squad-server\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.the-squad-server.props",

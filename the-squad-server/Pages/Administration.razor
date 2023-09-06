@@ -319,27 +319,34 @@
                             </div>
                             <div class="modal-body">
                                 <input class="form-control mb-3" type="text" placeholder="Id" @bind="objServer.Id" disabled/>
-                                <input class="form-control mb-3" type="text" placeholder="Name" @bind="objServer.Name" />
-                                <input class="form-control mb-3" type="text" placeholder="Picture" @bind="objServer.ServerPicture" />
-                                <input class="form-control mb-3" type="text" placeholder="Status" @bind="objServer.Status" disabled/>
-                                <table>
-                                    @if (objServer.ServerRoleNames != null && objServer.ServerRoleNames.Count > 0)
-                                    @foreach (var role in objServer.ServerRoleNames)
-                                    {
-                                        <tr>
-                                            <td>@role.Name</td>
-                                            <td>
-                                                <button class="btm btn-success" @onclick="(() => EditServerRole(role))" >Edit</button>
-                                            </td>
-                                        </tr>
-                                    }
-                                </table>
-                                <button class="btm btn-success" @onclick="AddServerRole">New Server Role</button>
+                                <input class="form-control mb-3" type="text" placeholder="Server Name" @bind="objServer.Name" />
+                                <input class="form-control mb-3" type="text" placeholder="Server Status" @bind="objServer.Status" disabled />
+                                <input class="form-control mb-3" type="text" placeholder="Picture Url" @bind="objServer.ServerPicture" />
+                                <input class="form-control mb-3" type="text" placeholder="DNS Address" @bind="objServer.ServerDNSAddress" />
+                                <input class="form-control mb-3" type="text" placeholder="Server Port" @bind="objServer.ServerConnectionPort" />
+                                <input class="form-control mb-3" type="text" placeholder="Game Password" @bind="objServer.ServerConnectionPassword" />
+                                <textarea class="form-control mb-3" placeholder="Server Instructions" @bind="objServer.ServerInstructions" />
+                                @if (_existingServer)
+                                {
+                                    <table>
+                                        @if (objServer.ServerRoleNames != null && objServer.ServerRoleNames.Count > 0)
+                                        @foreach (var role in objServer.ServerRoleNames)
+                                        {
+                                            <tr>
+                                                <td>@role.Name</td>
+                                                <td>
+                                                    <button class="btm btn-success" @onclick="(() => EditServerRole(role))" >Edit</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                    <button class="btm btn-success" @onclick="AddServerRole">New Server Role</button>
+                                }
                                 <br /><br />
                                 <button class="btn btn-primary" @onclick="SaveServer">
                                     Save
                                 </button>
-                                @if (objSS.ServiceUrl != null && objSS.ServiceUrl != "")
+                                @if (objServer != null && objServer.Name != "")
                                 {  
                                     <button class="btn btn-danger" @onclick="DeleteServer">
                                         Delete
@@ -366,7 +373,6 @@
                             <div class="modal-body">
                                 <input class="form-control mb-3" type="text" placeholder="Id" @bind="objServerRole.Id" disabled/>
                                 <input class="form-control mb-3" type="text" placeholder="Name" @bind="objServerRole.Name" />
-                                <input class="form-control mb-3" type="text" placeholder="MapName" @bind="objServerRole.MappedIdentityRole" />
                                 <br /><br />
                                 <button class="btn btn-primary" @onclick="SaveServerRole">
                                     Save
@@ -423,6 +429,7 @@
     bool RolePopup = false;
     bool ShowServerPopup = false;
     bool ShowServerRolePopup = false;
+    bool _existingServer = false;
 
 
     //
@@ -468,11 +475,13 @@
     public void AddNewServer()
     {
         objServer = new Server();
+        _existingServer = false;
         ShowServerPopup = true;
     }
     async Task EditServer(Server _server)
     {
         objServer = _server;
+        _existingServer = true;
         ShowServerPopup = true;
     }
     public void AddServerRole()
@@ -490,20 +499,7 @@
     async Task SaveServerRole()
     {
         ShowServerRolePopup = false;
-        ServerRole existingRole = null!;
-        if (objServer.ServerRoleNames != null && objServer.ServerRoleNames.Count > 0)
-        {
-            existingRole = objServer.ServerRoleNames.FirstOrDefault(r => r.Id == objServerRole.Id);
-        }
-        if (existingRole != null && existingRole.Id == objServerRole.Id)
-        {
-            existingRole.Name = objServerRole.Name;
-            existingRole.MappedIdentityRole = objServerRole.MappedIdentityRole;
-        }
-        else
-        {
-            objServer.ServerRoleNames.Add(objServerRole);
-        }
+        await _ServerManager.AddRoleToServerAsync(objServer, objServerRole);
         ColServers = _ServerManager.ListServers();
         ShowServerPopup = true;
     }

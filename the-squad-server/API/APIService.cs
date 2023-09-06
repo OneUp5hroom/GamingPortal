@@ -10,7 +10,7 @@ public class APIService<Tcrt> : IDisposable where Tcrt : class
 {
     private readonly HttpClient _httpClient;
     private readonly string _key;
-    public APIService(HttpClient httpClient, string key, string userId)
+    public APIService(HttpClient httpClient, string key)
     {
         _key = key;
         _httpClient = httpClient;

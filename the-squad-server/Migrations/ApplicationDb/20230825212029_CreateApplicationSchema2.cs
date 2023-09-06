@@ -5,15 +5,15 @@
 namespace the_squad_server.Migrations.ApplicationDb
 {
     /// <inheritdoc />
-    public partial class updateApplicationSchemaServerUpdate2 : Migration
+    public partial class CreateApplicationSchema2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ServerPicture",
+            migrationBuilder.AddColumn<int>(
+                name: "ServerConnectionPort",
                 table: "Servers",
-                type: "TEXT",
+                type: "INTEGER",
                 nullable: true);
         }
 
@@ -21,7 +21,7 @@ namespace the_squad_server.Migrations.ApplicationDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ServerPicture",
+                name: "ServerConnectionPort",
                 table: "Servers");
         }
     }

@@ -11,8 +11,8 @@ using the_squad_server.Data;
 namespace the_squad_server.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230823011313_updateApplicationSchema")]
-    partial class updateApplicationSchema
+    [Migration("20230825212029_CreateApplicationSchema2")]
+    partial class CreateApplicationSchema2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,18 +29,6 @@ namespace the_squad_server.Migrations.ApplicationDb
                     b.Property<bool>("Active")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("FacebookUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GithubUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("InstagramUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("KickUrl")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ProfileDescription")
                         .IsRequired()
                         .HasMaxLength(2048)
@@ -50,19 +38,10 @@ namespace the_squad_server.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TikTokUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TwitchUrl")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("YoutubeUrl")
                         .HasColumnType("TEXT");
 
                     b.HasKey("CreatorId");
@@ -79,7 +58,7 @@ namespace the_squad_server.Migrations.ApplicationDb
                     b.Property<bool>("Active")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CreatorId")
+                    b.Property<int?>("CreatorId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("Generic")
@@ -100,16 +79,69 @@ namespace the_squad_server.Migrations.ApplicationDb
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("the_squad_server.Models.Server", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServerConnectionPassword")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ServerConnectionPort")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ServerDNSAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServerInstructions")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServerPicture")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Servers");
+                });
+
+            modelBuilder.Entity("the_squad_server.Models.ServerRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ServerId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServerId");
+
+                    b.ToTable("ServerRoles");
+                });
+
             modelBuilder.Entity("the_squad_server.Models.StreamingService", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("StreamingServiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("Active")
+                    b.Property<int?>("CreatorId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CreatorId")
+                    b.Property<bool>("Generic")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LogoUrl")
@@ -120,7 +152,13 @@ namespace the_squad_server.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ServiceUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VideoUrl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("StreamingServiceId");
 
                     b.HasIndex("CreatorId");
 
@@ -129,20 +167,29 @@ namespace the_squad_server.Migrations.ApplicationDb
 
             modelBuilder.Entity("the_squad_server.Models.Game", b =>
                 {
-                    b.HasOne("the_squad_server.Models.Creator", "GameCreatorAssignment")
+                    b.HasOne("the_squad_server.Models.Creator", "CreatorAssignment")
                         .WithMany("Games")
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CreatorId");
 
-                    b.Navigation("GameCreatorAssignment");
+                    b.Navigation("CreatorAssignment");
+                });
+
+            modelBuilder.Entity("the_squad_server.Models.ServerRole", b =>
+                {
+                    b.HasOne("the_squad_server.Models.Server", "ServerAssignment")
+                        .WithMany("ServerRoleNames")
+                        .HasForeignKey("ServerId");
+
+                    b.Navigation("ServerAssignment");
                 });
 
             modelBuilder.Entity("the_squad_server.Models.StreamingService", b =>
                 {
-                    b.HasOne("the_squad_server.Models.Creator", null)
+                    b.HasOne("the_squad_server.Models.Creator", "CreatorAssignment")
                         .WithMany("StreamingServices")
                         .HasForeignKey("CreatorId");
+
+                    b.Navigation("CreatorAssignment");
                 });
 
             modelBuilder.Entity("the_squad_server.Models.Creator", b =>
@@ -150,6 +197,11 @@ namespace the_squad_server.Migrations.ApplicationDb
                     b.Navigation("Games");
 
                     b.Navigation("StreamingServices");
+                });
+
+            modelBuilder.Entity("the_squad_server.Models.Server", b =>
+                {
+                    b.Navigation("ServerRoleNames");
                 });
 #pragma warning restore 612, 618
         }

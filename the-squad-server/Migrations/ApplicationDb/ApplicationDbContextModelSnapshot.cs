@@ -86,6 +86,18 @@ namespace the_squad_server.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ServerConnectionPassword")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ServerConnectionPort")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ServerDNSAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServerInstructions")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ServerPicture")
                         .HasColumnType("TEXT");
 
@@ -103,10 +115,6 @@ namespace the_squad_server.Migrations.ApplicationDb
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("MappedIdentityRole")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -118,7 +126,7 @@ namespace the_squad_server.Migrations.ApplicationDb
 
                     b.HasIndex("ServerId");
 
-                    b.ToTable("ServerRole");
+                    b.ToTable("ServerRoles");
                 });
 
             modelBuilder.Entity("the_squad_server.Models.StreamingService", b =>
@@ -165,9 +173,11 @@ namespace the_squad_server.Migrations.ApplicationDb
 
             modelBuilder.Entity("the_squad_server.Models.ServerRole", b =>
                 {
-                    b.HasOne("the_squad_server.Models.Server", null)
+                    b.HasOne("the_squad_server.Models.Server", "ServerAssignment")
                         .WithMany("ServerRoleNames")
                         .HasForeignKey("ServerId");
+
+                    b.Navigation("ServerAssignment");
                 });
 
             modelBuilder.Entity("the_squad_server.Models.StreamingService", b =>

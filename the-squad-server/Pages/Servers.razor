@@ -3,9 +3,11 @@
 @using System.Text.Json
 @using System.Text.Json.Serialization
 @using the_squad_server.API
+@using the_squad_server.Data
 @using the_squad_server.Models
 @inject UserManager<IdentityUser> _UserManager
 @inject RoleManager<IdentityRole> _RoleManager
+@inject ServerManager<Server> _ServerManager
 @inject APIService<Server> _APIService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ILogger<Servers> logger;
@@ -17,16 +19,18 @@
     <Authorized>
         <div class="container">
             <div class="row">
-                @if (@context.User.IsInRole("SevenDaysToDieSQUAD") || @context.User.IsInRole("Administrators"))
+
+
+                @foreach (var server in ColServers)
                 {
                     <div class="col">
                         <div class="card" style="width: 25rem;">
                             <div class="card-header text-center bg-primary bg-gradient text-light">
-                                7 Days to Die: The Squad
+                                @server.Name
                             </div>
                             <img class="card-img-top"
                                 style="margin-top: 15px;margin-bottom: 15px; margin-left: auto; margin-right: auto; width: 23rem; "
-                                src="https://7daystodie.com/images/header_g.png" alt="Card image cap">
+                                src="@server.ServerPicture" alt="@server.Name Image">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">Server Defaults to Offline after 30min of no activity</li>
                                 <li class="list-group-item">Server Will automatically backup after each play session if at
@@ -35,14 +39,21 @@
                             <div class="card-body">
                                 <table class="table" style="width: 15em;">
                                     <tr>
-                                        <td>Server Status: @statusText</td>
+                                        <td>Server Status: @server.Status</td>
                                         <td>
-                                            <div style="width:25px;height:25px;background-color:@color;" />
+                                            @if (server.Status == ServerStatus.Online)
+                                            {
+                                                <div style="width:25px;height:25px;background-color:green;" />
+                                            }
+                                            else
+                                            {
+                                                <div style="width:25px;height:25px;background-color:grey;" />
+                                            }
                                         </td>
                                     </tr>
                                 </table>
 
-                                @if (serverUp)
+                                @if (server.Status != null && server.Status != ServerStatus.Online && server.Status != ServerStatus.Unknown)
                                 {
                                     <button type="button" @onclick=@(() => startServer(new Server()))
                                         class="btn btn-sm btn-primary">Start Server</button>
@@ -52,60 +63,37 @@
                                     <button type="button" class="btn btn-sm btn-secondary" disabled>Start Server</button>
                                 }
                                 <span style="width:10px;" />
-                                <button type="button" class="btn btn-sm btn-primary" @onclick="serverOnline">Check Server
+                                <button type="button" class="btn btn-sm btn-primary" @onclick="(() => serverOnline(server))">Check Server
                                     Status</button>
                             </div>
-                            <div class="card-footer text-muted">
-                                Open to the full Squad
-                            </div>
+                            @if (@server.Status == ServerStatus.Online)
+                            {
+                                <div class="card-footer text-muted">
+                                    @if (@server.ServerDNSAddress != null && @server.ServerDNSAddress != "")
+                                    {
+                                        <span><b>Address:</b> @server.ServerDNSAddress</span>
+                                        <br />
+                                    }
+                                    @if (server.ServerConnectionPort != null && server.ServerConnectionPort > 0)
+                                    {
+                                        <span><b>Port:</b> @server.ServerConnectionPort</span>
+                                        <br />
+                                    }
+                                    @if (server.ServerConnectionPassword != null && server.ServerConnectionPassword != "")
+                                    {
+                                        <span><b>Game Password:</b> @server.ServerConnectionPassword</span>
+                                        <br />
+                                    }
+                                    @if (server.ServerInstructions != null && server.ServerInstructions != "")
+                                    {
+                                        <h6><b>Instructions:</b></h6>
+                                        <pre>@server.ServerInstructions</pre>
+                                    }
+                                </div>
+                            }
                         </div>
                     </div>
                 }
-                @if (@context.User.IsInRole("SevenDaysToDiePRIVATE") || @context.User.IsInRole("Administrators"))
-                {
-                    <div class="col">
-                        <div class="card" style="width: 25rem;">
-                            <div class="card-header text-center bg-success bg-gradient text-light">
-                                7 Days to Die: Private Server
-                            </div>
-                            <img class="card-img-top"
-                                style="margin-top: 15px;margin-bottom: 15px; margin-left: auto; margin-right: auto; width: 23rem; "
-                                src="https://7daystodie.com/images/header_g.png" alt="Card image cap">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Server Defaults to Offline after 30min of no activity</li>
-                                <li class="list-group-item">Server Will automatically backup after each play session if at
-                                    least one player connected for more than 5 minutes.</li>
-                            </ul>
-                            <div class="card-body">
-                                <table class="table" style="width: 15em;">
-                                    <tr>
-                                        <td>Server Status: @statusText</td>
-                                        <td>
-                                            <div style="width:25px;height:25px;background-color:@color;" />
-                                        </td>
-                                    </tr>
-                                </table>
-
-                                @if (serverUp)
-                                {
-                                    <button type="button" @onclick=@(() => startServer(new Server()))
-                                        class="btn btn-sm btn-primary">Start Server</button>
-                                }
-                                else
-                                {
-                                    <button type="button" class="btn btn-sm btn-secondary" disabled>Start Server</button>
-                                }
-                                <span style="width:10px;" />
-                                <button type="button" class="btn btn-sm btn-primary" @onclick="serverOnline">Check Server
-                                    Status</button>
-                            </div>
-                            <div class="card-footer text-muted">
-                                Just Josh and Katie
-                            </div>
-                        </div>
-                    </div>
-                }
-
             </div>
         </div>
     </Authorized>
@@ -117,9 +105,8 @@
 
 @code {
     private IdentityUser user = new IdentityUser();
-
+    private List<Server> ColServers = new List<Server>();
     bool serverUp = false;
-    string color = "grey";
     string statusText = "unknown";
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationStateTask { get; set; }
@@ -155,26 +142,42 @@
         }
         
     }
-    void serverOnline()
+    async Task serverOnline(Server _server)
     {
-        var random2 = randomGenerator.Next(2);
-        if (random2 == 0)
+        await Task.Delay(10);
+        _server.Status = ServerStatus.Online;
+    }
+
+    async Task listAvailableServers()
+    {
+        var roles = _ServerManager.ListServerRoles();
+        if (roles != null && roles.Count > 0)
         {
-            serverUp = true;
-            color = "red";
-            statusText = "Offline";
-        }
-        else
-        {
-            serverUp = false;
-            color = "green";
-            statusText = "Online";
+            List<string> roleList = new List<string>();
+            user = await _UserManager.GetUserAsync(CurrentUser);
+            foreach (var role in roles)
+            {
+                if(!roleList.Contains(role.Name))
+                {
+                    var UserResult = await _UserManager.IsInRoleAsync(user, role.Name);
+                    if (UserResult)
+                    {
+                        roleList.Add(role.Name);
+                    }
+                }
+
+            }
+            ColServers = _ServerManager.ListServersbyRole(roleList);
         }
     }
 
     protected override async Task OnInitializedAsync()
     {
         CurrentUser = (await authenticationStateTask).User;
-        serverOnline();
+        await listAvailableServers();
+        foreach(var serv in ColServers)
+        {
+            serv.Status = ServerStatus.Unknown;
+        }
     }
 }

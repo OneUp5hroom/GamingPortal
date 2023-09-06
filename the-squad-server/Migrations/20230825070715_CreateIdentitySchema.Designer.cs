@@ -11,7 +11,7 @@ using the_squad_server.Data;
 namespace the_squad_server.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20230823005604_CreateIdentitySchema")]
+    [Migration("20230825070715_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />

@@ -48,6 +48,45 @@
         }
       },
       {
+        "HashCode": -399185157,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.EditCreatorProfile",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.EditCreatorProfile",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "EditCreatorProfile"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.EditCreatorProfile",
+          "Common.TypeNameIdentifier": "EditCreatorProfile",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": -1192485710,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.EditCreatorProfile",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.EditCreatorProfile",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "the_squad_server.Pages.EditCreatorProfile"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.EditCreatorProfile",
+          "Common.TypeNameIdentifier": "EditCreatorProfile",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
         "HashCode": 945163897,
         "Kind": "Components.Component",
         "Name": "the_squad_server.Pages.Servers",

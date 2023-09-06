@@ -9,6 +9,45 @@
   "ProjectWorkspaceState": {
     "TagHelpers": [
       {
+        "HashCode": 373389088,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Administration",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Administration",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Administration"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Administration",
+          "Common.TypeNameIdentifier": "Administration",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": 416559170,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.Pages.Administration",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.Pages.Administration",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "the_squad_server.Pages.Administration"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.Pages.Administration",
+          "Common.TypeNameIdentifier": "Administration",
+          "Common.TypeNamespace": "the_squad_server.Pages",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
         "HashCode": 945163897,
         "Kind": "Components.Component",
         "Name": "the_squad_server.Pages.Servers",

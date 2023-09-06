@@ -42,6 +42,9 @@ builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
+// Remove for Production
+app.UseDeveloperExceptionPage();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -65,5 +68,3 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-
-app.Run();

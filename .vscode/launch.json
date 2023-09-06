@@ -12,7 +12,8 @@
             "program": "${workspaceFolder}/the-squad-server/bin/Debug/net7.0/the-squad-server.dll",
             "args": [
                 "run",
-                "--urls","https://localhost:5168;http://localhost:5169"
+                "--urls","https://localhost:5168;http://localhost:5169",
+                "-v diagnostic"
             ],
             "cwd": "${workspaceFolder}/the-squad-server",
             "stopAtEntry": false,

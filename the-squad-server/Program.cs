@@ -39,11 +39,7 @@ builder.Services.AddScoped<StreamingServiceManager<StreamingService>>();
 builder.Services.AddScoped<ServerManager<Server>>();
 builder.Services.AddHttpClient();
 
-
 var app = builder.Build();
-
-// Remove for Production
-app.UseDeveloperExceptionPage();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -57,14 +53,13 @@ else
     app.UseHsts();
 }
 
+// Remove for Production
+app.UseDeveloperExceptionPage();
+
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

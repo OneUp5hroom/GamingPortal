@@ -48,6 +48,45 @@
         }
       },
       {
+        "HashCode": -2029385718,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.App",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.App",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "App"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.App",
+          "Common.TypeNameIdentifier": "App",
+          "Common.TypeNamespace": "the_squad_server",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
+        "HashCode": 1142332676,
+        "Kind": "Components.Component",
+        "Name": "the_squad_server.App",
+        "AssemblyName": "the-squad-server",
+        "DisplayName": "the_squad_server.App",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "the_squad_server.App"
+          }
+        ],
+        "Metadata": {
+          "Common.TypeName": "the_squad_server.App",
+          "Common.TypeNameIdentifier": "App",
+          "Common.TypeNamespace": "the_squad_server",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch",
+          "Runtime.Name": "Components.IComponent"
+        }
+      },
+      {
         "HashCode": 2035891753,
         "Kind": "Components.Component",
         "Name": "the_squad_server.Shared.NavMenu",

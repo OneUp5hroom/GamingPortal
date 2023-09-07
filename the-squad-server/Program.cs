@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using the_squad_server.API;
 using the_squad_server.Areas.Identity;
 using the_squad_server.Data;
+using the_squad_server.Services;
 using the_squad_server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,10 +41,14 @@ builder.Services.AddSingleton<APIService<Server>>(provider =>
     ActivatorUtilities.CreateInstance<APIService<Server>>(provider, builder.Configuration["Authentication:API:ClientSecret"])
 );
 
+builder.Services.AddSingleton<EmailSender>(provider => 
+    ActivatorUtilities.CreateInstance<EmailSender>(provider, new GraphSettings(builder.Configuration["Authentication:MSGRAPH:ClientId"], builder.Configuration["Authentication:MSGRAPH:ClientSecret"], builder.Configuration["Authentication:MSGRAPH:TenantId"])));
+
 builder.Services.AddScoped<CreatorManager<Creator>>();
 builder.Services.AddScoped<GameManager<Game>>();
 builder.Services.AddScoped<StreamingServiceManager<StreamingService>>();
 builder.Services.AddScoped<ServerManager<Server>>();
+
 builder.Services.AddHttpClient();
 
 var app = builder.Build();

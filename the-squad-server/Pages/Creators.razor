@@ -39,7 +39,7 @@
                                                 <div class="row align-items-center">
                                                     <div class="col-4 mx-auto">
                                                         <img class="stream-site d-block mx-auto" src="@ss.LogoUrl" />
-                                                            @if (ss.Name != "Youtube")
+                                                            @if (ss.Name != "YouTube")
                                                             {
                                                                 <a class="btn btn-outline-info m-3 text-nowrap" role="button"
                                                                     href="@ss.ServiceUrl" target="_blank">
@@ -54,13 +54,13 @@
                                                             }
                                                     </div>
                                                     <div class="col align-self-center">
-                                                        @if (ss.Name == "Twitch.Tv")
+                                                        @if (ss.Name == "Twitch.TV")
                                                         {
                                                             <iframe src=@(ss.VideoUrl+"&amp;autoplay=1&mute=1")
                                                                 frameborder="0" allowfullscreen="true" scrolling="no" height="171"
                                                                 width="304" class="d-block mx-auto"></iframe>
                                                         }
-                                                        else if (ss.Name == "Youtube")
+                                                        else if (ss.Name == "YouTube")
                                                         {
                                                             <iframe width="304" height="171" 
                                                                 src=@(ss.VideoUrl+"&amp;autoplay=1&mute=1") title="YouTube video player" 

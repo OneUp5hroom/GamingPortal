@@ -7,7 +7,7 @@ using the_squad_server.Data;
 
 #nullable disable
 
-namespace the_squad_server.Migrations.UserDb
+namespace the_squad_server.Migrations
 {
     [DbContext(typeof(UserDbContext))]
     partial class UserDbContextModelSnapshot : ModelSnapshot

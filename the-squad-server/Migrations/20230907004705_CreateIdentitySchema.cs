@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace the_squad_server.Migrations.UserDb
+namespace the_squad_server.Migrations
 {
     /// <inheritdoc />
     public partial class CreateIdentitySchema : Migration

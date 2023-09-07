@@ -8,10 +8,10 @@ using the_squad_server.Data;
 
 #nullable disable
 
-namespace the_squad_server.Migrations.UserDb
+namespace the_squad_server.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20230906230037_CreateIdentitySchema")]
+    [Migration("20230907004705_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />

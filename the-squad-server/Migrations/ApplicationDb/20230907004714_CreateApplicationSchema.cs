@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace the_squad_server.Migrations
+namespace the_squad_server.Migrations.ApplicationDb
 {
     /// <inheritdoc />
     public partial class CreateApplicationSchema : Migration
@@ -32,7 +32,9 @@ namespace the_squad_server.Migrations
                 name: "Servers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ServerGUID = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     ServerPicture = table.Column<string>(type: "TEXT", nullable: true),
                     ServerDNSAddress = table.Column<string>(type: "TEXT", nullable: true),
@@ -95,9 +97,10 @@ namespace the_squad_server.Migrations
                 name: "ServerRoles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ServerId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    ServerId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -8,10 +8,10 @@ using the_squad_server.Data;
 
 #nullable disable
 
-namespace the_squad_server.Migrations
+namespace the_squad_server.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230906221043_CreateApplicationSchema")]
+    [Migration("20230907004714_CreateApplicationSchema")]
     partial class CreateApplicationSchema
     {
         /// <inheritdoc />
@@ -81,9 +81,9 @@ namespace the_squad_server.Migrations
 
             modelBuilder.Entity("the_squad_server.Models.Server", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -96,6 +96,9 @@ namespace the_squad_server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ServerDNSAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ServerGUID")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ServerInstructions")
@@ -114,16 +117,16 @@ namespace the_squad_server.Migrations
 
             modelBuilder.Entity("the_squad_server.Models.ServerRole", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ServerId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("ServerId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

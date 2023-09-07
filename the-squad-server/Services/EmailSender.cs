@@ -65,7 +65,7 @@ namespace the_squad_server.Services
             };
             try
             {
-                await _appClient.Users["web@the-squad.games"].SendMail.PostAsync(body);
+                await _appClient.Users["the-squad@the-squad.games"].SendMail.PostAsync(body);
             }
             catch (Exception ex)
             {

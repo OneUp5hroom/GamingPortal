@@ -6,7 +6,8 @@ namespace the_squad_server.Models;
 
 public class Server
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
+    public Guid ServerGUID { get; set; }
     public string Name { get; set; }
     public ICollection<ServerRole> ServerRoleNames { get; set; }
     public string? ServerPicture { get; set; } = null!;
@@ -18,12 +19,12 @@ public class Server
 
     public Server()
     {
-        Id = Guid.NewGuid();
+        ServerGUID = Guid.NewGuid();
         ServerRoleNames = new List<ServerRole>();
     }
     public Server(string name)
     {
-        Id = Guid.NewGuid();
+        ServerGUID = Guid.NewGuid();
         Name = name;
         Status = ServerStatus.Unknown;
         ServerRoleNames = new List<ServerRole>();
@@ -33,7 +34,7 @@ public class Server
 public class ServerRole
 {
     [Key]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     [ForeignKey("ServerId")]
     [InverseProperty("ServerRoleNames")]
@@ -41,11 +42,9 @@ public class ServerRole
 
     public ServerRole()
     {
-        Id = Guid.NewGuid();
     }
     public ServerRole(string name)
     {
-        Id = Guid.NewGuid();
         Name = name;
     }
 }

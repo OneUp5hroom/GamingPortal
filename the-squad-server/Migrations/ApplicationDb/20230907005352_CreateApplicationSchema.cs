@@ -15,13 +15,13 @@ namespace the_squad_server.Migrations.ApplicationDb
                 name: "Creators",
                 columns: table => new
                 {
-                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: true),
-                    UserName = table.Column<string>(type: "TEXT", nullable: true),
-                    ProfilePictureUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    ProfileDescription = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: false),
-                    Active = table.Column<bool>(type: "INTEGER", nullable: false)
+                    CreatorId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfileDescription = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,16 +32,16 @@ namespace the_squad_server.Migrations.ApplicationDb
                 name: "Servers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ServerGUID = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ServerPicture = table.Column<string>(type: "TEXT", nullable: true),
-                    ServerDNSAddress = table.Column<string>(type: "TEXT", nullable: true),
-                    Status = table.Column<int>(type: "INTEGER", nullable: true),
-                    ServerConnectionPassword = table.Column<string>(type: "TEXT", nullable: true),
-                    ServerConnectionPort = table.Column<int>(type: "INTEGER", nullable: true),
-                    ServerInstructions = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ServerGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServerPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ServerDNSAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    ServerConnectionPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ServerConnectionPort = table.Column<int>(type: "int", nullable: true),
+                    ServerInstructions = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -52,13 +52,13 @@ namespace the_squad_server.Migrations.ApplicationDb
                 name: "Games",
                 columns: table => new
                 {
-                    GameId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    Active = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Generic = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatorId = table.Column<int>(type: "INTEGER", nullable: true)
+                    GameId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    Generic = table.Column<bool>(type: "bit", nullable: false),
+                    CreatorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -74,14 +74,14 @@ namespace the_squad_server.Migrations.ApplicationDb
                 name: "StreamingServices",
                 columns: table => new
                 {
-                    StreamingServiceId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    LogoUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    ServiceUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    VideoUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    Generic = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatorId = table.Column<int>(type: "INTEGER", nullable: true)
+                    StreamingServiceId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServiceUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Generic = table.Column<bool>(type: "bit", nullable: false),
+                    CreatorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,10 +97,10 @@ namespace the_squad_server.Migrations.ApplicationDb
                 name: "ServerRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ServerId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

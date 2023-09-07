@@ -2,3 +2,5 @@ notes.txt
 the-squad-server/appsettings.Development.json
 the-squad-server/app.db*
 *1
+the-squad-server/bin*
+the-squad-server/obj*

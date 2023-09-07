@@ -12,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 if (builder.Environment.IsDevelopment())
 {
-    connectionString = builder.Configuration.GetConnectionString("devDefaultConnection") ?? throw new InvalidOperationException("Connection string 'devDefaultConnection' not found.");
+    var initConnectionString = builder.Configuration.GetConnectionString("devDefaultConnection") ?? throw new InvalidOperationException("Connection string 'devDefaultConnection' not found.");
+    connectionString = string.Format("{0} User ID={1}; Password={2};", initConnectionString, builder.Configuration["Authentication:SQL:ClientId"], builder.Configuration["Authentication:SQL:ClientSecret"]);
 }
 
 builder.Services.AddDbContext<UserDbContext>(options =>

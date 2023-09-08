@@ -406,7 +406,7 @@
 
 @code {
     IdentityUser objUser = new IdentityUser();
-    string CurrentUserRole { get; set; } = "Users";
+    string CurrentUserRole { get; set; }
     string NewRoleName { get; set; }
 
     Game objGame = new Game();
@@ -420,7 +420,7 @@
     List<Game> ColGames = new List<Game>();
     List<StreamingService> ColSS = new List<StreamingService>();
 
-    List<string> Options = new List<string>() { "Users", "Administrators" };
+    List<string> Options = new List<string>();
     
     string strError = "";
     bool ShowPopup = false;
@@ -663,64 +663,12 @@
                 user.Email = objUser.Email;
                 // Update the user
                 await _UserManager.UpdateAsync(user);
-                // Only update password if the current value
-                // is not the default value
-                if (objUser.PasswordHash != "*****")
+                var roles = await _UserManager.GetRolesAsync(user);
+                if (roles.Any())
                 {
-                    var resetToken =
-                    await _UserManager.GeneratePasswordResetTokenAsync(user);
-                    var passworduser =
-                    await _UserManager.ResetPasswordAsync(
-                    user,
-                    resetToken,
-                    objUser.PasswordHash);
-                    if (!passworduser.Succeeded)
-                    {
-                        if (passworduser.Errors.FirstOrDefault() != null)
-                        {
-                            strError =
-                            passworduser
-                            .Errors
-                            .FirstOrDefault()
-                            .Description;
-                        }
-                        else
-                        {
-                            strError = "Pasword error";
-                        }
-                        // Keep the popup opened
-                        return;
-                    }
+                    await _UserManager.RemoveFromRolesAsync(user, roles);
                 }
-                // Handle Roles
-                // Is user in administrator role?
-                var UserResult =
-                await _UserManager
-                .IsInRoleAsync(user, ADMINISTRATION_ROLE);
-                // Is Administrator role selected
-                // but user is not an Administrator?
-                if (
-                (CurrentUserRole == ADMINISTRATION_ROLE)
-                &
-                (!UserResult))
-                {
-                    // Put admin in Administrator role
-                    await _UserManager
-                    .AddToRoleAsync(user, ADMINISTRATION_ROLE);
-                }
-                else
-                {
-                    // Is Administrator role not selected
-                    // but user is an Administrator?
-                    if ((CurrentUserRole != ADMINISTRATION_ROLE)
-                    &
-                    (UserResult))
-                    {
-                        // Remove user from Administrator role
-                        await _UserManager
-                        .RemoveFromRoleAsync(user, ADMINISTRATION_ROLE);
-                    }
-                }
+                await _UserManager.AddToRoleAsync(user, CurrentUserRole);
             }
             else
             {
@@ -781,20 +729,10 @@
         objUser = _IdentityUser;
         // Get the user
         var user = await _UserManager.FindByIdAsync(objUser.Id);
-        if (user != null)
+        var roles = await _UserManager.GetRolesAsync(user);
+        if (roles.Any())
         {
-            // Is user in administrator role?
-            var UserResult =
-            await _UserManager
-            .IsInRoleAsync(user, ADMINISTRATION_ROLE);
-            if (UserResult)
-            {
-                CurrentUserRole = ADMINISTRATION_ROLE;
-            }
-            else
-            {
-                CurrentUserRole = "Users";
-            }
+            CurrentUserRole = roles[0];
         }
         // Open the Popup
         ShowPopup = true;
